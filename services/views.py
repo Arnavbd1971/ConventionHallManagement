@@ -1,5 +1,3 @@
-from itertools import count
-
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -9,18 +7,17 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Hall, HallRent, HallImage
 from .forms import HallForm, HallRentForm, HallRentFormSet, HallImagesFormSet, HallImageForm
 
+def dash_board_view(request):
+    return render(request, "adminlte/dashboard.html", {})
 
 class HallListView(ListView):
     model = Hall
     template_name = "adminlte/hall_list.html"
     context_object_name = "halls"
 
+    def get_queryset(self):
+        return Hall.objects.all().order_by('-id')
 
-# class HallCreateView(CreateView):
-#     model = Hall
-#     form_class = HallForm
-#     template_name = "adminlte/hall_form.html"
-#     success_url = reverse_lazy("hall_list")
 
 class HallCreateView(View):
     template_name = "adminlte/hall_form.html"
@@ -59,6 +56,19 @@ class HallCreateView(View):
             "hall_images_formset": hall_images_formset,
         })
 
+class HallDetailView(View):
+    template_name = "adminlte/hall_detail.html"
+
+    def get(self, request, pk):
+        hall = Hall.objects.get(pk=pk)
+        rent_formset = HallRentFormSet(queryset=hall.rents.all())   # rents linked to hall
+        hall_images_formset = HallImagesFormSet(queryset=hall.images.all())  # images linked to hall
+
+        return render(request, self.template_name, {
+            "hall": hall,
+            "rent_formset": rent_formset,
+            "hall_images_formset": hall_images_formset,
+        })
 
 
 

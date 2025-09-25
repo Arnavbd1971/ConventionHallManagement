@@ -2,170 +2,157 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Index - Yummy Bootstrap Template</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+    <title>Harborlights - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Favicons -->
-  <link href="{%static 'assets/img/favicon.png' %}" rel="icon">
-  <link href="{%static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700&display=swap" rel="stylesheet">
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{%static 'assets/website/css/open-iconic-bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{%static 'assets/website/css/animate.css' %}">
 
-  <!-- Vendor CSS Files -->
-  <link href="{%static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="{%static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{%static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
-  <link href="{%static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-  <link href="{%static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{%static 'assets/website/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{%static 'assets/website/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{%static 'assets/website/css/magnific-popup.css' %}">
 
-  <!-- Main CSS File -->
-  <link href="{%static 'assets/css/main.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{%static 'assets/website/css/aos.css' %}">
+
+    <link rel="stylesheet" href="{%static 'assets/website/css/ionicons.min.css' %}">
+
+    <link rel="stylesheet" href="{%static 'assets/website/css/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{%static 'assets/website/css/jquery.timepicker.css' %}">
+
+
+    <link rel="stylesheet" href="{%static 'assets/website/css/flaticon.css' %}">
+    <link rel="stylesheet" href="{%static 'assets/website/css/icomoon.css' %}">
+    <link rel="stylesheet" href="{%static 'assets/website/css/style.css' %}">
 </head>
+<body>
 
-<body class="index-page">
-
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container position-relative d-flex align-items-center justify-content-between">
-
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-         <img style="max-height:60px" src="https://lh3.googleusercontent.com/sitesv/AICyYdZc60zkW9WXnZpCmCvydZGSMoSO5fJPppTGGOsXiysbupk0dkK5Fk7BHAatI7CHEpe0cTrGypNzzV2bbzFSMu6QPqezVoOGyfahEEaTiT87GqPHEA02VsMBqjRQGMX8Qd0uEMG5kzUoqD0QBC8C85whHohSnozKjJQjpA-MqHeBzZkVZlMhMfLDp4Y=w16383" alt="">
-<!--        <h1 class="sitename">Yummy</h1>-->
-<!--        <span>.</span>-->
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="#hero" class="active">Home<br></a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#menu">Menu</a></li>
-          <li><a href="#events">Events</a></li>
-          <li><a href="#chefs">Chefs</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="#">Dropdown 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Dropdown 2</a></li>
-              <li><a href="#">Dropdown 3</a></li>
-              <li><a href="#">Dropdown 4</a></li>
-            </ul>
-          </li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="{% url "core:login" %}">LogIn / Registration</a>
-
-    </div>
-  </header>
-
-  <main class="main">
-
-    {%block content%}
-
-    {%endblock%}
-
-  </main>
-
-  <footer id="footer" class="footer dark-background">
-
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
-      <div class="row gy-3">
-        <div class="col-lg-3 col-md-6 d-flex">
-          <i class="bi bi-geo-alt icon"></i>
-          <div class="address">
-            <h4>Address</h4>
-            <p>A108 Adam Street</p>
-            <p>New York, NY 535022</p>
-            <p></p>
-          </div>
+        <a class="navbar-brand" href="index.html">Harbor<span>lights</span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="oi oi-menu"></span> Menu
+        </button>
 
+        <div class="collapse navbar-collapse" id="ftco-nav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="rooms.html" class="nav-link">Our Rooms</a></li>
+                <li class="nav-item"><a href="restaurant.html" class="nav-link">Restaurant</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
         </div>
-
-        <div class="col-lg-3 col-md-6 d-flex">
-          <i class="bi bi-telephone icon"></i>
-          <div>
-            <h4>Contact</h4>
-            <p>
-              <strong>Phone:</strong> <span>+1 5589 55488 55</span><br>
-              <strong>Email:</strong> <span>info@example.com</span><br>
-            </p>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 d-flex">
-          <i class="bi bi-clock icon"></i>
-          <div>
-            <h4>Opening Hours</h4>
-            <p>
-              <strong>Mon-Sat:</strong> <span>11AM - 23PM</span><br>
-              <strong>Sunday</strong>: <span>Closed</span>
-            </p>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6">
-          <h4>Follow Us</h4>
-          <div class="social-links d-flex">
-            <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-
-      </div>
     </div>
+</nav>
+<!-- END nav -->
 
-    <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Yummy</strong> <span>All Rights Reserved</span></p>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a href="https://themewagon.com">ThemeWagon</a>
-      </div>
+{%block content%}
+
+{%endblock%}
+
+
+<footer class="ftco-footer ftco-section img" style="background-image: url(images/bg_4.jpg);">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md">
+                <div class="ftco-footer-widget mb-4">
+                    <h2 class="ftco-heading-2">Harbor Lights</h2>
+                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there
+                        live the blind texts.</p>
+                    <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+                        <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                        <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                        <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="ftco-footer-widget mb-4 ml-md-5">
+                    <h2 class="ftco-heading-2">Useful Links</h2>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="py-2 d-block">Blog</a></li>
+                        <li><a href="#" class="py-2 d-block">Rooms</a></li>
+                        <li><a href="#" class="py-2 d-block">Amenities</a></li>
+                        <li><a href="#" class="py-2 d-block">Gift Card</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="ftco-footer-widget mb-4">
+                    <h2 class="ftco-heading-2">Privacy</h2>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="py-2 d-block">Career</a></li>
+                        <li><a href="#" class="py-2 d-block">About Us</a></li>
+                        <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+                        <li><a href="#" class="py-2 d-block">Services</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="ftco-footer-widget mb-4">
+                    <h2 class="ftco-heading-2">Have a Questions?</h2>
+                    <div class="block-23 mb-3">
+                        <ul>
+                            <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span>
+                            </li>
+                            <li><a href="#"><span class="icon icon-phone"></span><span
+                                    class="text">+2 392 3929 210</span></a></li>
+                            <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+
+                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                    All rights reserved | This template is made with <i class="icon-heart color-danger"
+                                                                        aria-hidden="true"></i> by <a
+                            href="https://colorlib.com" target="_blank">Colorlib</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+            </div>
+        </div>
     </div>
+</footer>
 
-  </footer>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen">
+    <svg class="circular" width="48px" height="48px">
+        <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+        <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="#F96D00"/>
+    </svg>
+</div>
 
-  <!-- Preloader -->
-  <div id="preloader"></div>
 
-  <!-- Vendor JS Files -->
-  <script src="{%static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{%static 'assets/vendor/php-email-form/validate.js' %}"></script>
-  <script src="{%static 'assets/vendor/aos/aos.js' %}"></script>
-  <script src="{%static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
-  <script src="{%static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
-  <script src="{%static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
-
-  <!-- Main JS File -->
-  <script src="{%static 'assets/js/main.js' %}"></script>
+<script src="{%static 'assets/website/js/jquery.min.js' %}"></script>
+<script src="{%static 'assets/website/js/jquery-migrate-3.0.1.min.js' %}"></script>
+<script src="{%static 'assets/website/js/popper.min.js' %}"></script>
+<script src="{%static 'assets/website/js/bootstrap.min.js' %}"></script>
+<script src="{%static 'assets/website/js/jquery.easing.1.3.js' %}"></script>
+<script src="{%static 'assets/website/js/jquery.waypoints.min.js' %}"></script>
+<script src="{%static 'assets/website/js/jquery.stellar.min.js' %}"></script>
+<script src="{%static 'assets/website/js/owl.carousel.min.js' %}"></script>
+<script src="{%static 'assets/website/js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{%static 'assets/website/js/aos.js' %}"></script>
+<script src="{%static 'assets/website/js/jquery.animateNumber.min.js' %}"></script>
+<script src="{%static 'assets/website/js/bootstrap-datepicker.js' %}"></script>
+<script src="{%static 'assets/website/js/scrollax.min.js' %}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+<script src="{%static 'assets/website/js/google-map.js' %}"></script>
+<script src="{%static 'assets/website/js/main.js' %}"></script>
 
 </body>
-
 </html>
 

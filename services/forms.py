@@ -7,10 +7,31 @@ class HallForm(forms.ModelForm):
     class Meta:
         model = Hall
         fields = [
-            "name", "description", "location", "capacity", 'batch',
+            "name", 'price', "description", "location", "capacity", 'batch',
             "area_size", "parking_capacity", "year_built",
             "is_government_property",
         ]
+
+        widgets = {
+            "year_built": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "form-control",
+                }
+            ),
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "price": forms.NumberInput(attrs={"class": "form-control"}),
+            "description": forms.Textarea(attrs={"class": "form-control"}),
+            "location": forms.TextInput(attrs={"class": "form-control"}),
+            "capacity": forms.NumberInput(attrs={"class": "form-control"}),
+            "batch": forms.NumberInput(attrs={"class": "form-control"}),
+            "area_size": forms.NumberInput(attrs={"class": "form-control"}),
+            "parking_capacity": forms.NumberInput(attrs={"class": "form-control"}),
+            "is_government_property": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        }
+        labels = {
+            "price": "Price Per Shift",
+        }
 
 
 class HallRentForm(forms.ModelForm):

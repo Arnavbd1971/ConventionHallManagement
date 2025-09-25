@@ -1,0 +1,128 @@
+{% extends "./adminlteBase.html" %}
+{% load static %}
+
+{% block content %}
+<!--begin::App Content Header-->
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6"><h3 class="mb-0">Hall Details</h3></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Hall Details</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::App Content Header-->
+
+<!--begin::App Content-->
+<div class="app-content">
+    <div class="container-fluid">
+        <div class="row g-4">
+            <div class="col-md-12">
+                <div class="card card-info card-outline mb-4">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <!-- Hall Info -->
+                            <div class="col-md-6">
+                                <label class="form-label">Hall Name</label>
+                                <h4 class="form-control-plaintext">{{ hall.name }}</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Location</label>
+                                <h4 class="form-control-plaintext">{{ hall.location }}</h4>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Description</label>
+                                <h4 class="form-control-plaintext">{{ hall.description }}</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Capacity</label>
+                                <h4 class="form-control-plaintext">{{ hall.capacity }}</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Batch</label>
+                                <h4 class="form-control-plaintext">{{ hall.batch }}</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Area Size</label>
+                                <h4 class="form-control-plaintext">{{ hall.area_size }}</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Parking Capacity</label>
+                                <h4 class="form-control-plaintext">{{ hall.parking_capacity }}</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Year Built</label>
+                                <h4 class="form-control-plaintext">{{ hall.year_built }}</h4>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        {% if hall.is_government_property %}checked{% endif %}
+                                        disabled
+                                    />
+                                    <label class="form-check-label">
+                                        Is Government Property
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rent Info -->
+                        <h5 class="mt-5">Rent Info</h5>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Season</th>
+                                    <th>Shift</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for rent in hall.rents.all %}
+                                    <tr>
+                                        <td>{{ rent.get_season_display }}</td>
+                                        <td>{{ rent.get_shift_display }}</td>
+                                        <td>{{ rent.price }}</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr><td colspan="3" class="text-center">No rent info available</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <!-- Hall Images -->
+                        <h5 class="mt-5">Hall Images</h5>
+                        <div class="d-flex flex-wrap">
+                            {% for img in hall.images.all %}
+                                <div class="p-2">
+                                    <img src="{{ img.image.url }}" class="img-thumbnail" width="200" alt="{{ img.caption }}">
+                                    <p class="text-center">{{ img.caption }}</p>
+                                </div>
+                            {% empty %}
+                                <p>No images available</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <a href="{% url 'services:hall_list' %}" class="btn btn-secondary">Back to List</a>
+                        <a href="{% url 'services:hall_edit' hall.id %}" class="btn btn-info">Edit</a>
+                        <a href="{% url 'services:hall_delete' hall.id %}" class="btn btn-danger"
+                           onclick="return confirm('Are you sure you want to delete this hall?');">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::App Content-->
+{% endblock %}

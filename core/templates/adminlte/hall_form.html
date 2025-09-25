@@ -33,140 +33,57 @@
             <div class="col-md-12">
                 <!--begin::Form Validation-->
                 <div class="card card-info card-outline mb-4">
-                    <!--begin::Header-->
-<!--                    <div class="card-header">-->
-<!--                        <div class="card-title">Hall Creation</div>-->
-<!--                    </div>-->
-                    <!--end::Header-->
-
                     <!--begin::Form-->
                     <form method="post" class="needs-validation" enctype="multipart/form-data">
                         {% csrf_token %}
                         <!--begin::Body-->
                         <div class="card-body">
-                            <!--begin::Row-->
                             <div class="row g-3">
-                                <!--begin::Col-->
+                                <!-- Hall Fields -->
                                 <div class="col-md-6">
-                                    <label for="hall_name" class="form-label">Hall Name</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="hall_name"
-                                            name="name"
-                                            required
-                                    />
-                                    <!--                        <div class="valid-feedback">Looks good!</div>-->
+                                    {{ hall_form.name.label_tag }}
+                                    {{ hall_form.name }}
                                 </div>
-                                <!--end::Col-->
-                                <!--begin::Col-->
                                 <div class="col-md-6">
-                                    <label for="location" class="form-label">Location</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="location"
-                                            name="location"
-                                            required
-                                    />
-                                    <!--                        <div class="valid-feedback">Looks good!</div>-->
+                                    {{ hall_form.price.label_tag }}
+                                    {{ hall_form.price }}
                                 </div>
-                                <!--end::Col-->
-                                <!--begin::Col-->
-                                <div class="col-md-12">
-                                    <label for="description" class="form-label">Description</label>
-                                    <textarea
-                                            class="form-control"
-                                            id="description"
-                                            name="description"
-                                            required
-                                    ></textarea>
-                                    <!--                        <div class="valid-feedback">Looks good!</div>-->
-                                </div>
-                                <!--end::Col-->
-                                <!--begin::Col-->
                                 <div class="col-md-6">
-                                    <label for="capacity" class="form-label">capacity</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="capacity"
-                                            name="capacity"
-                                            required
-                                    />
-                                    <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
+                                    {{ hall_form.location.label_tag }}
+                                    {{ hall_form.location }}
                                 </div>
-                                <!--end::Col-->
-                                <!--begin::Col-->
+
                                 <div class="col-md-6">
-                                    <label for="batch" class="form-label">Batch</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="batch"
-                                            name="batch"
-                                            required
-                                    />
-                                    <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
+                                    {{ hall_form.capacity.label_tag }}
+                                    {{ hall_form.capacity }}
                                 </div>
-                                <!--end::Col-->
-                                <!--begin::Col-->
                                 <div class="col-md-6">
-                                    <label for="area_size" class="form-label">Area Size</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="area_size"
-                                            name="area_size"
-                                            required
-                                    />
-                                    <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
+                                    {{ hall_form.batch.label_tag }}
+                                    {{ hall_form.batch }}
                                 </div>
-                                <!--end::Col-->
-                                <!--begin::Col-->
                                 <div class="col-md-6">
-                                    <label for="parking_capacity" class="form-label">Parking Capacity</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="parking_capacity"
-                                            name="parking_capacity"
-                                            required
-                                    />
-                                    <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
+                                    {{ hall_form.area_size.label_tag }}
+                                    {{ hall_form.area_size }}
                                 </div>
-                                <!--end::Col-->
-                                <!--begin::Col-->
                                 <div class="col-md-6">
-                                    <label for="year_built" class="form-label">Year Built</label>
-                                    <input
-                                            type="text"
-                                            class="form-control"
-                                            id="year_built"
-                                            name="year_built"
-                                            required
-                                    />
-                                    <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
+                                    {{ hall_form.parking_capacity.label_tag }}
+                                    {{ hall_form.parking_capacity }}
                                 </div>
-                                <!--end::Col-->
-                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    {{ hall_form.year_built.label_tag }}
+                                    {{ hall_form.year_built }}
+                                </div>
                                 <div class="col-12">
                                     <div class="form-check">
-                                        <input
-                                                class="form-check-input"
-                                                type="checkbox"
-                                                id="is_government_property"
-                                                name="is_government_property"
-                                        />
-                                        <label class="form-check-label" for="is_government_property">
-                                            Is Government Property
-                                        </label>
-                                        <!--                            <div class="invalid-feedback">You must agree before submitting.</div>-->
+                                        {{ hall_form.is_government_property }}
+                                        {{ hall_form.is_government_property.label_tag }}
                                     </div>
                                 </div>
-                                <!--end::Col-->
+                                <div class="col-md-12">
+                                    {{ hall_form.description.label_tag }}
+                                    {{ hall_form.description }}
+                                </div>
                             </div>
-                            <!--end::Row-->
 
                             <!--begin::Rent Info-->
                             <h5 class="mt-5">Rent Info</h5>

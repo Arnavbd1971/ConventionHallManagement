@@ -4,7 +4,6 @@
 {% block content %}
 
 
-
 <!--begin::App Content Header-->
 <div class="app-content-header">
     <!--begin::Container-->
@@ -31,94 +30,109 @@
         <!--begin::Row-->
         <div class="row g-4">
             <!--begin::Col-->
-<div class="col-md-12">
-    <!--begin::Form Validation-->
-    <div class="card card-info card-outline mb-4">
-        <!--begin::Header-->
-        <div class="card-header">
-<!--            <div class="card-title">Hall Creation</div>-->
-            <a href="{% url 'services:hall_create' %}"><button type="button" class="btn btn-success mb-2">Create Hall</button></a>
+            <div class="col-md-12">
+                <!--begin::Form Validation-->
+                <div class="card card-info card-outline mb-4">
+                    <!--begin::Header-->
+                    <div class="card-header">
+                        <!--            <div class="card-title">Hall Creation</div>-->
+                        <a href="{% url 'services:hall_create' %}">
+                            <button type="button" class="btn btn-success mb-2">Create Hall</button>
+                        </a>
 
-        </div>
-        <!--end::Header-->
+                    </div>
+                    <!--end::Header-->
 
 
-        <!--begin::List-->
-        <div class="card-body">
-            <table class="table table-bordered" role="table">
-                <thead>
-                <tr>
-                    <th style="width: 10px" scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Capacity</th>
-                    <th style="width: 40px" scope="col">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for hall in halls %}
-                <tr class="align-middle">
-                    <td>{{ forloop.counter }}.</td>
-                    <td>{{ hall.name }}</td>
-                    <td>{{ hall.location }}</td>
-                    <td>{{ hall.capacity }}</td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-primary">Edit</a>
-                        <a href="#" class="btn btn-sm btn-danger">Delete</a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center">No halls found</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <!--end::List-->
+                    <!--begin::List-->
+                    <div class="card-body">
+                        <table class="table table-bordered" role="table">
+                            <thead>
+                            <tr>
+                                <th style="width: 10px" scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Price Per Shift</th>
+                                <th style="width: 40px" scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for hall in halls %}
+                            <tr class="align-middle">
+                                <td>{{ forloop.counter }}.</td>
+                                <td>{{ hall.name }}</td>
+                                <td>{{ hall.location }}</td>
+                                <td>{{ hall.price }}</td>
+                                <td>
+                                    <!-- View -->
+                                    <a href="{% url 'services:hall_detail' hall.id %}" class="btn btn-sm btn-info"
+                                       title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <!-- Edit -->
+                                    <a href="{% url 'services:hall_edit' hall.id %}" class="btn btn-sm btn-primary mt-2 disabled"
+                                       title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <!-- Delete -->
+                                    <a href="{% url 'services:hall_delete' hall.id %}" class="btn btn-sm btn-danger mt-2 disabled"
+                                       title="Delete" >
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center">No halls found</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--end::List-->
 
-        <!--begin::Card Footer-->
-        <div class="card-footer clearfix">
-            <ul class="pagination pagination-sm m-0 float-end">
-                <li class="page-item"><a class="page-link" href="#">«</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">»</a></li>
-            </ul>
-        </div>
+                    <!--begin::Card Footer-->
+                    <div class="card-footer clearfix">
+                        <ul class="pagination pagination-sm m-0 float-end">
+                            <li class="page-item"><a class="page-link" href="#">«</a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">»</a></li>
+                        </ul>
+                    </div>
 
-        <!--begin::Card Footer-->
-        <script>
-            // Example starter JavaScript for disabling form submissions if there are invalid fields
-            (() => {
-              'use strict';
+                    <!--begin::Card Footer-->
+                    <script>
+                        // Example starter JavaScript for disabling form submissions if there are invalid fields
+                        (() => {
+                          'use strict';
 
-              // Fetch all the forms we want to apply custom Bootstrap validation styles to
-              const forms = document.querySelectorAll('.needs-validation');
+                          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                          const forms = document.querySelectorAll('.needs-validation');
 
-              // Loop over them and prevent submission
-              Array.from(forms).forEach((form) => {
-                form.addEventListener(
-                  'submit',
-                  (event) => {
-                    if (!form.checkValidity()) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
+                          // Loop over them and prevent submission
+                          Array.from(forms).forEach((form) => {
+                            form.addEventListener(
+                              'submit',
+                              (event) => {
+                                if (!form.checkValidity()) {
+                                  event.preventDefault();
+                                  event.stopPropagation();
+                                }
 
-                    form.classList.add('was-validated');
-                  },
-                  false,
-                );
-              });
-            })();
-        </script>
-        <!--end::JavaScript-->
-    </div>
-    <!--end::Form Validation-->
-</div>
-<!--end::Col-->
+                                form.classList.add('was-validated');
+                              },
+                              false,
+                            );
+                          });
+                        })();
+                    </script>
+                    <!--end::JavaScript-->
+                </div>
+                <!--end::Form Validation-->
+            </div>
+            <!--end::Col-->
         </div>
         <!--end::Row-->
     </div>
