@@ -4,218 +4,278 @@
 
 {% block content %}
 
-<!--begin::Col-->
-<div class="col-md-12">
-    <!--begin::Form Validation-->
-    <div class="card card-info card-outline mb-4">
-        <!--begin::Header-->
-        <div class="card-header">
-            <div class="card-title">Hall Creation</div>
+<!--begin::App Content Header-->
+<div class="app-content-header">
+    <!--begin::Container-->
+    <div class="container-fluid">
+        <!--begin::Row-->
+        <div class="row">
+            <div class="col-sm-6"><h3 class="mb-0">Hall Creation</h3></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Hall Creation</li>
+                </ol>
+            </div>
         </div>
-        <!--end::Header-->
-
-
-        <!--begin::Form-->
-        <form method="post" class="needs-validation">
-            {% csrf_token %}
-            <!--begin::Body-->
-            <div class="card-body">
-                <!--begin::Row-->
-                <div class="row g-3">
-                    <!--begin::Col-->
-                    <div class="col-md-6">
-                        <label for="hall_name" class="form-label">Hall Name</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="hall_name"
-                                name="name"
-                                required
-                        />
-                        <!--                        <div class="valid-feedback">Looks good!</div>-->
-                    </div>
-                    <!--end::Col-->
-                    <!--begin::Col-->
-                    <div class="col-md-6">
-                        <label for="location" class="form-label">Location</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="location"
-                                name="location"
-                                required
-                        />
-                        <!--                        <div class="valid-feedback">Looks good!</div>-->
-                    </div>
-                    <!--end::Col-->
-                    <!--begin::Col-->
-                    <div class="col-md-12">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea
-                                class="form-control"
-                                id="description"
-                                name="description"
-                                required
-                        ></textarea>
-                        <!--                        <div class="valid-feedback">Looks good!</div>-->
-                    </div>
-                    <!--end::Col-->
-                    <!--begin::Col-->
-                    <div class="col-md-6">
-                        <label for="capacity" class="form-label">capacity</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="capacity"
-                                name="capacity"
-                                required
-                        />
-                        <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
-                    </div>
-                    <!--end::Col-->
-                    <!--begin::Col-->
-                    <div class="col-md-6">
-                        <label for="batch" class="form-label">Batch</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="batch"
-                                name="batch"
-                                required
-                        />
-                        <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
-                    </div>
-                    <!--end::Col-->
-                    <!--begin::Col-->
-                    <div class="col-md-6">
-                        <label for="area_size" class="form-label">Area Size</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="area_size"
-                                name="area_size"
-                                required
-                        />
-                        <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
-                    </div>
-                    <!--end::Col-->
-                    <!--begin::Col-->
-                    <div class="col-md-6">
-                        <label for="parking_capacity" class="form-label">Parking Capacity</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="parking_capacity"
-                                name="parking_capacity"
-                                required
-                        />
-                        <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
-                    </div>
-                    <!--end::Col-->
-                    <!--begin::Col-->
-                    <div class="col-md-6">
-                        <label for="year_built" class="form-label">Year Built</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="year_built"
-                                name="year_built"
-                                required
-                        />
-                        <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
-                    </div>
-                    <!--end::Col-->
-                    <!--begin::Col-->
-                    <div class="col-12">
-                        <div class="form-check">
-                            <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    id="is_government_property"
-                                    name="is_government_property"
-                                    required
-                            />
-                            <label class="form-check-label" for="is_government_property">
-                                Is Government Property
-                            </label>
-                            <!--                            <div class="invalid-feedback">You must agree before submitting.</div>-->
-                        </div>
-                    </div>
-                    <!--end::Col-->
-                </div>
-                <!--end::Row-->
-
-                <h5 class="mt-5">Rent Info</h5>
-                <div id="rent-forms">
-                    {{ rent_formset.management_form }}
-                    {% for rent_form in rent_formset %}
-                    {% include "adminlte/rent_form.html" with rent_form=rent_form %}
-                    {% endfor %}
-                </div>
-
-                <button type="button"
-                        class="btn btn-outline-primary"
-                        id="add-rent-btn"
-                        hx-get="{% url 'services:rent_form_partial' %}?form_index={{ rent_formset.total_form_count }}"
-                        hx-include="#rent-forms"
-                        hx-target="#rent-forms"
-                        hx-swap="beforeend">
-                    + Add Rent Info
-                </button>
-
-
-                <script>
-                    let formIndex = {{ rent_formset.total_form_count }};
-
-                    document.body.addEventListener('htmx:afterSwap', function(evt) {
-                        if (evt.target.id === "rent-forms") {
-                            formIndex++;
-                            document.getElementById('id_form-TOTAL_FORMS').value = formIndex;
-                        }
-                    });
-                </script>
-                <hr>
-            </div>
-            <!--end::Body-->
-            <!--begin::Footer-->
-            <div class="card-footer">
-                <button class="btn btn-info" type="submit">Submit form</button>
-            </div>
-            <!--end::Footer-->
-        </form>
-        <!--end::Form-->
-
-        <!--begin::JavaScript-->
-        <script>
-            // Example starter JavaScript for disabling form submissions if there are invalid fields
-            (() => {
-              'use strict';
-
-              // Fetch all the forms we want to apply custom Bootstrap validation styles to
-              const forms = document.querySelectorAll('.needs-validation');
-
-              // Loop over them and prevent submission
-              Array.from(forms).forEach((form) => {
-                form.addEventListener(
-                  'submit',
-                  (event) => {
-                    if (!form.checkValidity()) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-
-                    form.classList.add('was-validated');
-                  },
-                  false,
-                );
-              });
-            })();
-        </script>
-        <!--end::JavaScript-->
+        <!--end::Row-->
     </div>
-    <!--end::Form Validation-->
+    <!--end::Container-->
 </div>
-<!--end::Col-->
+<!--end::App Content Header-->
+<!--begin::App Content-->
+<div class="app-content">
+    <!--begin::Container-->
+    <div class="container-fluid">
+        <!--begin::Row-->
+        <div class="row g-4">
+            <!--begin::Col-->
+            <div class="col-md-12">
+                <!--begin::Form Validation-->
+                <div class="card card-info card-outline mb-4">
+                    <!--begin::Header-->
+<!--                    <div class="card-header">-->
+<!--                        <div class="card-title">Hall Creation</div>-->
+<!--                    </div>-->
+                    <!--end::Header-->
+
+                    <!--begin::Form-->
+                    <form method="post" class="needs-validation" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <!--begin::Row-->
+                            <div class="row g-3">
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <label for="hall_name" class="form-label">Hall Name</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            id="hall_name"
+                                            name="name"
+                                            required
+                                    />
+                                    <!--                        <div class="valid-feedback">Looks good!</div>-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <label for="location" class="form-label">Location</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            id="location"
+                                            name="location"
+                                            required
+                                    />
+                                    <!--                        <div class="valid-feedback">Looks good!</div>-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-12">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea
+                                            class="form-control"
+                                            id="description"
+                                            name="description"
+                                            required
+                                    ></textarea>
+                                    <!--                        <div class="valid-feedback">Looks good!</div>-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <label for="capacity" class="form-label">capacity</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            id="capacity"
+                                            name="capacity"
+                                            required
+                                    />
+                                    <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <label for="batch" class="form-label">Batch</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            id="batch"
+                                            name="batch"
+                                            required
+                                    />
+                                    <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <label for="area_size" class="form-label">Area Size</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            id="area_size"
+                                            name="area_size"
+                                            required
+                                    />
+                                    <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <label for="parking_capacity" class="form-label">Parking Capacity</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            id="parking_capacity"
+                                            name="parking_capacity"
+                                            required
+                                    />
+                                    <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <label for="year_built" class="form-label">Year Built</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            id="year_built"
+                                            name="year_built"
+                                            required
+                                    />
+                                    <!--                        <div class="invalid-feedback">Please provide a valid city.</div>-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input
+                                                class="form-check-input"
+                                                type="checkbox"
+                                                id="is_government_property"
+                                                name="is_government_property"
+                                        />
+                                        <label class="form-check-label" for="is_government_property">
+                                            Is Government Property
+                                        </label>
+                                        <!--                            <div class="invalid-feedback">You must agree before submitting.</div>-->
+                                    </div>
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Row-->
+
+                            <!--begin::Rent Info-->
+                            <h5 class="mt-5">Rent Info</h5>
+                            <div id="rent-forms">
+                                {{ rent_formset.management_form }}
+                                {% for rent_form in rent_formset %}
+                                {% include "adminlte/rent_form.html" with rent_form=rent_form %}
+                                {% endfor %}
+                            </div>
+
+                            <button type="button"
+                                    class="btn btn-outline-primary"
+                                    id="add-rent-btn"
+                                    hx-get="{% url 'services:rent_form_partial' %}?form_index={{ rent_formset.total_form_count }}"
+                                    hx-include="#rent-forms"
+                                    hx-target="#rent-forms"
+                                    hx-swap="beforeend">
+                                + Add Rent Info
+                            </button>
+                            <script>
+                                let formIndex = {{ rent_formset.total_form_count }};
+
+                                document.body.addEventListener('htmx:afterSwap', function(evt) {
+                                    if (evt.target.id === "rent-forms") {
+                                        formIndex++;
+                                        document.getElementById('id_form-TOTAL_FORMS').value = formIndex;
+                                    }
+                                });
+                            </script>
+                            <hr>
+                            <!--end::Rent Info-->
+
+                            <!--begin::Hall Images-->
+                            <h5 class="mt-5">Hall Images</h5>
+                            <div id="hall-images-forms">
+                                {{ hall_images_formset.management_form }}
+                                {% for hall_image_form in hall_images_formset %}
+                                {% include "adminlte/hall_images_form.html" with hall_image_form=hall_image_form %}
+                                {% endfor %}
+                            </div>
+
+                            <button type="button"
+                                    class="btn btn-outline-primary"
+                                    id="add-hall-image-btn"
+                                    hx-get="{% url 'services:hall_image_form_partial' %}?form_index={{ hall_image_formset.total_form_count }}"
+                                    hx-include="#hall-images-forms"
+                                    hx-target="#hall-images-forms"
+                                    hx-swap="beforeend">
+                                + Add Hall Images
+                            </button>
+                            <script>
+                                let formIndex = {{ rent_formset.total_form_count }};
+
+                                document.body.addEventListener('htmx:afterSwap', function(evt) {
+                                    if (evt.target.id === "rent-forms") {
+                                        formIndex++;
+                                        document.getElementById('id_form-TOTAL_FORMS').value = formIndex;
+                                    }
+                                });
+                            </script>
+                            <hr>
+                            <!--end::Hall Images-->
+                        </div>
+                        <!--end::Body-->
+                        <!--begin::Footer-->
+                        <div class="card-footer">
+                            <button class="btn btn-info" type="submit">Submit form</button>
+                        </div>
+                        <!--end::Footer-->
+                    </form>
+                    <!--end::Form-->
+
+                    <!--begin::JavaScript-->
+                    <script>
+                        // Example starter JavaScript for disabling form submissions if there are invalid fields
+                        (() => {
+                          'use strict';
+
+                          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                          const forms = document.querySelectorAll('.needs-validation');
+
+                          // Loop over them and prevent submission
+                          Array.from(forms).forEach((form) => {
+                            form.addEventListener(
+                              'submit',
+                              (event) => {
+                                if (!form.checkValidity()) {
+                                  event.preventDefault();
+                                  event.stopPropagation();
+                                }
+
+                                form.classList.add('was-validated');
+                              },
+                              false,
+                            );
+                          });
+                        })();
+                    </script>
+                    <!--end::JavaScript-->
+                </div>
+                <!--end::Form Validation-->
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Row-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::App Content-->
 
 
 {% endblock %}

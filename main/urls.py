@@ -25,3 +25,6 @@ urlpatterns = [
                   path("", include(("core.urls", "core"), "core")),
                   path("services/", include(("services.urls", "services"), "services"))
               ] + static(settings.STATIC_URL)
+
+if settings.DEBUG:  # only in dev, not production
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

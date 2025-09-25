@@ -1,5 +1,7 @@
 from django import forms
 from .models import Hall, HallRent, HallImage
+from django.forms import modelformset_factory
+from .models import HallRent
 
 class HallForm(forms.ModelForm):
     class Meta:
@@ -21,19 +23,30 @@ class HallRentForm(forms.ModelForm):
             "price": forms.NumberInput(attrs={'class':'form-control'})
         }
 
-
-class HallImageForm(forms.ModelForm):
-    class Meta:
-        model = HallImage
-        fields = ["image", "caption"]
-
-from django.forms import modelformset_factory
-from .models import HallRent
-
 HallRentFormSet = modelformset_factory(
     HallRent,
     form=HallRentForm,
     extra=0,
     can_delete=True
 )
+
+
+class HallImageForm(forms.ModelForm):
+    class Meta:
+        model = HallImage
+        fields = ["image", "caption"]
+        widgets = {
+            "image": forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            "caption": forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+HallImagesFormSet = modelformset_factory(
+    HallImage,
+    form=HallImageForm,
+    extra=0,
+    can_delete=True
+)
+
+
 
