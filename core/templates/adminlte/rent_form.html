@@ -1,0 +1,20 @@
+<div class="rent-form row align-items-end mb-3">
+    <div class="col">
+        {{ rent_form.season.label_tag }}
+        {{ rent_form.season }}
+    </div>
+    <div class="col">
+        {{ rent_form.shift.label_tag }}
+        {{ rent_form.shift }}
+    </div>
+    <div class="col">
+        {{ rent_form.price.label_tag }}
+        {{ rent_form.price }}
+    </div>
+    <div class="col-auto">
+        <button type="button" class="btn btn-danger"
+                onclick="this.closest('.rent-form').remove()">
+            Remove
+        </button>
+    </div>
+</div>

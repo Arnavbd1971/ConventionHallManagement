@@ -1,0 +1,47 @@
+{% extends "./auth.html" %}
+{% block content %}
+<div class="shadow-wrap">
+ <div class="form-wrap">
+  <h3>Signup </h3>
+<form method="post">
+  {% csrf_token %}
+
+  <div class="form-group">
+    {{ form.username.label_tag }}
+    {{ form.username }}
+<!--    {% if form.username.help_text %}-->
+<!--      <span class="form-text text-muted">{{ form.username.help_text|safe }}</span>-->
+<!--    {% endif %}-->
+  </div>
+
+  <div class="form-group">
+    {{ form.password1.label_tag }}
+    {{ form.password1 }}
+<!--    {% if form.password1.help_text %}-->
+<!--      <span class="form-text text-muted">{{ form.password1.help_text|safe }}</span>-->
+<!--    {% endif %}-->
+  </div>
+
+  <div class="form-group">
+    {{ form.password2.label_tag }}
+    {{ form.password2 }}
+<!--    {% if form.password2.help_text %}-->
+<!--      <span class="form-text text-muted">{{ form.password2.help_text|safe }}</span>-->
+<!--    {% endif %}-->
+  </div>
+
+  <div class="form-group">
+      <label>Type</label>
+    {{ form.type }}
+<!--    {% if form.password2.help_text %}-->
+<!--      <span class="form-text text-muted">{{ form.password2.help_text|safe }}</span>-->
+<!--    {% endif %}-->
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<a class="signup-link" href="{% url "core:login" %}">Login</a>
+</div>
+</div>
+{% endblock content %}a
