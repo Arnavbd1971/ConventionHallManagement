@@ -1,0 +1,169 @@
+{% extends "./adminlteBase.html" %}
+{% load static %}
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+{% block content %}
+
+<!--begin::App Content Header-->
+<div class="app-content-header">
+    <!--begin::Container-->
+    <div class="container-fluid">
+        <!--begin::Row-->
+        <div class="row">
+            <div class="col-sm-6"><h3 class="mb-0">{% if is_edit %} Edit Center {% else %} Center Creation {% endif %}</h3></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{% if is_edit %} Edit Center {% else %} Center Creation {% endif %}</li>
+                </ol>
+            </div>
+        </div>
+        <!--end::Row-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::App Content Header-->
+<!--begin::App Content-->
+<div class="app-content">
+    <!--begin::Container-->
+    <div class="container-fluid">
+        <!--begin::Row-->
+        <div class="row g-4">
+            <!--begin::Col-->
+            <div class="col-md-12">
+                <!--begin::Form Validation-->
+                <div class="card card-info card-outline mb-4">
+                    <!--begin::Form-->
+                    <form method="post" class="needs-validation" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <!-- Center Fields -->
+                                <div class="col-md-6">
+                                    {{ center_form.owner_user.label_tag }}
+                                    {{ center_form.owner_user }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ center_form.name.label_tag }}
+                                    {{ center_form.name }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ center_form.latitude.label_tag }}
+                                    {{ center_form.latitude }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ center_form.longitude.label_tag }}
+                                    {{ center_form.longitude }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ center_form.address.label_tag }}
+                                    {{ center_form.address }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ center_form.city.label_tag }}
+                                    {{ center_form.city }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ center_form.district.label_tag }}
+                                    {{ center_form.district }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ center_form.country.label_tag }}
+                                    {{ center_form.country }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ center_form.status.label_tag }}
+                                    {{ center_form.status }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ center_form.contact_phone.label_tag }}
+                                    {{ center_form.contact_phone }}
+                                </div>
+                                <div class="col-md-12">
+                                    {{ center_form.description.label_tag }}
+                                    {{ center_form.description }}
+                                </div>
+                            </div>
+
+                            <!--begin::Hall Info-->
+                            <h5 class="mt-5">Hall Info</h5>
+                            <div id="hall-forms">
+                                {{ hall_formset.management_form }}
+                                {% for hall_form in hall_formset %}
+                                {{ hall_form.id }}
+                                {% include "adminlte/hall_form_inline.html" with hall_form=hall_form %}
+                                {% endfor %}
+                            </div>
+
+                            <button type="button"
+                                    class="btn btn-outline-primary"
+                                    id="add-rent-btn"
+                                    hx-get="{% url 'services:hall_form_partial' %}?form_index={{ hall_formset.total_form_count }}"
+                                    hx-include="#hall-forms"
+                                    hx-target="#hall-forms"
+                                    hx-swap="beforeend">
+                                + Add Rent Info
+                            </button>
+                            <script>
+                                let formIndex = {{ hall_formset.total_form_count }};
+
+                                document.body.addEventListener('htmx:afterSwap', function(evt) {
+                                    if (evt.target.id === "hall-forms") {
+                                        formIndex++;
+                                        document.getElementById('id_form-TOTAL_FORMS').value = formIndex;
+                                    }
+                                });
+                            </script>
+                            <hr>
+                            <!--end::Rent Info-->
+                        </div>
+                        <!--end::Body-->
+                        <!--begin::Footer-->
+                        <div class="card-footer">
+                            <button class="btn btn-info" type="submit">{% if is_edit %} Update Center {% else %} Submit form {% endif %}</button>
+                        </div>
+                        <!--end::Footer-->
+                    </form>
+                    <!--end::Form-->
+
+                    <!--begin::JavaScript-->
+                    <script>
+                        // Example starter JavaScript for disabling form submissions if there are invalid fields
+                        (() => {
+                          'use strict';
+
+                          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                          const forms = document.querySelectorAll('.needs-validation');
+
+                          // Loop over them and prevent submission
+                          Array.from(forms).forEach((form) => {
+                            form.addEventListener(
+                              'submit',
+                              (event) => {
+                                if (!form.checkValidity()) {
+                                  event.preventDefault();
+                                  event.stopPropagation();
+                                }
+
+                                form.classList.add('was-validated');
+                              },
+                              false,
+                            );
+                          });
+                        })();
+                    </script>
+                    <!--end::JavaScript-->
+                </div>
+                <!--end::Form Validation-->
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Row-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::App Content-->
+
+
+{% endblock %}

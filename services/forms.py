@@ -1,52 +1,80 @@
 from django import forms
-from .models import Hall, HallRent, HallImage
+from .models import Center, Hall, HallImage
 from django.forms import modelformset_factory
-from .models import HallRent
+
+class CenterForm(forms.ModelForm):
+    class Meta:
+        model = Center
+        fields = [
+            "owner_user",
+            "name",
+            "description",
+            "address",
+            "latitude",
+            "longitude",
+            "city",
+            "district",
+            "country",
+            "status",
+            "contact_phone",
+        ]
+        widgets = {
+            "owner_user": forms.Select(attrs={"class": "form-control"}),
+            "description": forms.Textarea(attrs={"rows": 3, "class": "form-control"}),
+            "address": forms.Textarea(attrs={"rows": 1, "class": "form-control"}),
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "city": forms.TextInput(attrs={"class": "form-control"}),
+            "district": forms.TextInput(attrs={"class": "form-control"}),
+            "country": forms.TextInput(attrs={"class": "form-control"}),
+            "contact_phone": forms.TextInput(attrs={"class": "form-control"}),
+            "latitude": forms.NumberInput(attrs={"class": "form-control"}),
+            "longitude": forms.NumberInput(attrs={"class": "form-control"}),
+            "status": forms.Select(attrs={"class": "form-select"}),
+        }
+        labels = {
+            "owner_user": "Center Owner",
+        }
 
 class HallForm(forms.ModelForm):
     class Meta:
         model = Hall
         fields = [
-            "name", 'price', "description", "location", "capacity", 'batch',
-            "area_size", "parking_capacity", "year_built",
-            "is_government_property",
+            "name",
+            "capacity",
+            "price_currency",
+            "price_per_hour",
+            "price_per_day",
+            "min_booking_hours",
+            "latitude",
+            "longitude",
+            "description",
         ]
-
         widgets = {
-            "year_built": forms.DateInput(
-                attrs={
-                    "type": "date",
-                    "class": "form-control",
-                }
-            ),
             "name": forms.TextInput(attrs={"class": "form-control"}),
-            "price": forms.NumberInput(attrs={"class": "form-control"}),
-            "description": forms.Textarea(attrs={"class": "form-control"}),
-            "location": forms.TextInput(attrs={"class": "form-control"}),
-            "capacity": forms.NumberInput(attrs={"class": "form-control"}),
-            "batch": forms.NumberInput(attrs={"class": "form-control"}),
-            "area_size": forms.NumberInput(attrs={"class": "form-control"}),
-            "parking_capacity": forms.NumberInput(attrs={"class": "form-control"}),
-            "is_government_property": forms.CheckboxInput(attrs={"class": "form-check-input"}),
-        }
-        labels = {
-            "price": "Price Per Shift",
+            "capacity": forms.NumberInput(attrs={"class": "form-control", "min": 1}),
+            "price_currency": forms.TextInput(attrs={"class": "form-control"}),
+            "price_per_hour": forms.NumberInput(attrs={"class": "form-control", "step": "0.01"}),
+            "price_per_day": forms.NumberInput(attrs={"class": "form-control", "step": "0.01"}),
+            "min_booking_hours": forms.NumberInput(attrs={"class": "form-control", "min": 1}),
+            "latitude": forms.NumberInput(attrs={"class": "form-control", "step": "any"}),
+            "longitude": forms.NumberInput(attrs={"class": "form-control", "step": "any"}),
+            "description": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
         }
 
 
-class HallRentForm(forms.ModelForm):
-    class Meta:
-        model = HallRent
-        fields = ["season", "shift", "price"]
-        widgets = {
-            "season": forms.Select(attrs={'class':'form-select'}),
-            "shift": forms.Select(attrs={'class':'form-select'}),
-            "price": forms.NumberInput(attrs={'class':'form-control'})
-        }
-
-HallRentFormSet = modelformset_factory(
-    HallRent,
-    form=HallRentForm,
+# class HallRentForm(forms.ModelForm):
+#     class Meta:
+#         model = HallRent
+#         fields = ["season", "shift", "price"]
+#         widgets = {
+#             "season": forms.Select(attrs={'class':'form-select'}),
+#             "shift": forms.Select(attrs={'class':'form-select'}),
+#             "price": forms.NumberInput(attrs={'class':'form-control'})
+#         }
+#
+HallFormSet = modelformset_factory(
+    Hall,
+    form=HallForm,
     extra=0,
     can_delete=True
 )

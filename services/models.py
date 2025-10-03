@@ -1,50 +1,120 @@
+import uuid
 from django.db import models
+from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import JSONField
+from django.conf import settings
+from django.utils import timezone
 
-class Hall(models.Model):
-    name = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=12, decimal_places=2,default=0)
-    description = models.TextField()
-    location = models.CharField(max_length=255, blank=True, null=True)
-    capacity = models.PositiveIntegerField(help_text="Maximum number of persons")
-    batch = models.PositiveIntegerField(help_text="Maximum number of persons can dine",default=0)
-    area_size = models.CharField(max_length=50, blank=True, null=True)
-    parking_capacity = models.PositiveIntegerField(blank=True, null=True)
-    year_built = models.DateField(blank=True, null=True)
-    is_government_property = models.BooleanField(default=False)
-    updated_on = models.DateTimeField(auto_now=True)
+User = get_user_model()
+
+# -------------------------
+# Center Model
+# -------------------------
+class Center(models.Model):
+    owner_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(blank=True, null=True)
+    address = models.TextField(blank=True, null=True, unique=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, unique=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, unique=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
+    district = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
+
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("approved", "Approved"),
+        ("suspended", "Suspended"),
+        ("deleted", "Deleted"),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    contact_phone = models.CharField(max_length=20, blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
 
 
-class HallShift(models.TextChoices):
-    DAY = "day", "Day Shift"
-    NIGHT = "night", "Night Shift"
-    FULL = "full", "Day & Night Shift"
+# -------------------------
+# Center Admins
+# -------------------------
+class CenterAdmin(models.Model):
+    ROLE_CHOICES = [
+        ("manager", "Manager"),
+        ("staff", "Staff"),
+    ]
+
+    center = models.ForeignKey(Center, on_delete=models.CASCADE, related_name="admins",default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="center_roles")
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    permissions = models.JSONField(default=dict, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.role} @ {self.center}"
 
 
-class Season(models.TextChoices):
-    NOV_JAN = "nov_jan", "November – January"
-    FEB_OCT = "feb_oct", "February – October"
+# -------------------------
+# Halls
+# -------------------------
+class Hall(models.Model):
+    center = models.ForeignKey(Center, on_delete=models.CASCADE, related_name="halls",default=1)
+    name = models.TextField(unique=True)
+    slug = models.SlugField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    capacity = models.IntegerField(blank=True, null=True)
+    price_currency = models.CharField(max_length=10, default="BDT")
+    price_per_hour = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    price_per_day = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    min_booking_hours = models.PositiveIntegerField(default=1)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 
-class HallRent(models.Model):
-    hall = models.ForeignKey(Hall, related_name="rents", on_delete=models.CASCADE)
-    season = models.CharField(max_length=20, choices=Season.choices)
-    shift = models.CharField(max_length=20, choices=HallShift.choices)
-    price = models.DecimalField(max_digits=12, decimal_places=2)
+# -------------------------
+# Hall Images
+# -------------------------
+class HallImage(models.Model):
+    hall = models.ForeignKey(Hall, on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField(upload_to="hall_images/")
+    caption = models.TextField(blank=True, null=True)
+    order = models.IntegerField(default=0)
 
     class Meta:
-        unique_together = ("hall", "season", "shift")
+        ordering = ["order"]
 
     def __str__(self):
-        return f"{self.hall.name} - {self.get_season_display()} - {self.get_shift_display()}"
+        return f"Image for {self.hall.name}"
 
 
-class HallImage(models.Model):
-    hall = models.ForeignKey(Hall, related_name="images", on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="hall_images/")
-    caption = models.CharField(max_length=255, blank=True, null=True)
+# -------------------------
+# Amenities
+# -------------------------
+class Amenity(models.Model):
+    name = models.TextField(unique=True)
+    icon = models.ImageField(upload_to="hall_images/", default="hall_images/default_icon.png",)
 
     def __str__(self):
-        return f"Image of {self.hall.name}"
+        return self.name
+
+
+# -------------------------
+# Hall Amenities (M2M)
+# -------------------------
+class HallAmenity(models.Model):
+    hall = models.ForeignKey(Hall, on_delete=models.CASCADE, related_name="hall_amenities")
+    amenity = models.ForeignKey(Amenity, on_delete=models.CASCADE, related_name="amenity_halls")
+
+    class Meta:
+        unique_together = ("hall", "amenity")
+
+    def __str__(self):
+        return f"{self.hall.name} - {self.amenity.name}"

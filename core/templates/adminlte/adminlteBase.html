@@ -61,6 +61,8 @@
 <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
 
 
+
+
 <div class="app-wrapper">
     <!--begin::Header-->
     <nav class="app-header navbar navbar-expand bg-body">
@@ -291,13 +293,39 @@
                         data-accordion="false"
                         id="navigation"
                 >
+                    <!-- dashboard -->
                     <li class="nav-item">
-                        <a href="{% url 'services:daashboard' %}" class="nav-link">
+                        <a href="{% url 'services:dashboard' %}" class="nav-link">
 
                             <i class="nav-icon bi bi-speedometer"></i>
                             <p>Dashboard</p>
                         </a>
                     </li>
+                    <!-- Centers -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon bi bi-palette"></i>
+                            <p>
+                                Centers
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{% url 'services:center_list'%}" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Center List</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'services:center_create'%}" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Center Create</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Halls -->
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon bi bi-palette"></i>
@@ -308,42 +336,18 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{% url 'services:hall_list' %}" class="nav-link">
+                                <a href="{% url 'services:hall_list'%}" class="nav-link">
                                     <i class="nav-icon bi bi-circle"></i>
                                     <p>Hall List</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{% url 'services:hall_create' %}" class="nav-link">
+                                <a href="" class="nav-link">
                                     <i class="nav-icon bi bi-circle"></i>
                                     <p>Hall Create</p>
                                 </a>
                             </li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon bi bi-speedometer"></i>
-                            <p>Booking Management</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon bi bi-speedometer"></i>
-                            <p>Accounting</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon bi bi-speedometer"></i>
-                            <p>Analytic & Reports</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon bi bi-speedometer"></i>
-                            <p>User Management</p>
-                        </a>
                     </li>
                 </ul>
                 <!--end::Sidebar Menu-->
@@ -576,6 +580,32 @@
     //-----------------
 </script>
 <!--end::Script-->
+
+{% if messages %}
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
+  {% for message in messages %}
+  <div class="toast align-items-center text-bg-{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}danger{% else %}info{% endif %} border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ message }}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const toastElList = [].slice.call(document.querySelectorAll('.toast'))
+  toastElList.map(function (toastEl) {
+    const toast = new bootstrap.Toast(toastEl)
+    toast.show()
+  })
+})
+</script>
+{% endif %}
+
 </body>
 <!--end::Body-->
 </html>

@@ -1,0 +1,78 @@
+
+
+<div class="hall-form row align-items-end mb-3">
+    <!-- Include hidden fields -->
+    {% for hidden in hall_form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    <div style="display:none;">
+        {{ hall_form.DELETE }} <!-- Hidden DELETE field -->
+    </div>
+
+    <div class="col">
+        {{ hall_form.name.label_tag }}
+        {{ hall_form.name }}
+    </div>
+    <div class="col">
+        {{ hall_form.capacity.label_tag }}
+        {{ hall_form.capacity }}
+    </div>
+    <div class="col">
+        {{ hall_form.price_per_hour.label_tag }}
+        {{ hall_form.price_per_hour }}
+    </div>
+    <div class="col">
+        {{ hall_form.price_per_day.label_tag }}
+        {{ hall_form.price_per_day }}
+    </div>
+    <div class="col">
+        {{ hall_form.price_currency.label_tag }}
+        {{ hall_form.price_currency }}
+    </div>
+    <div class="col">
+        {{ hall_form.min_booking_hours.label_tag }}
+        {{ hall_form.min_booking_hours }}
+    </div>
+    <div class="col">
+        {{ hall_form.latitude.label_tag }}
+        {{ hall_form.latitude }}
+    </div>
+    <div class="col">
+        {{ hall_form.longitude.label_tag }}
+        {{ hall_form.longitude }}
+    </div>
+    <div class="col">
+        {{ hall_form.description.label_tag }}
+        {{ hall_form.description }}
+    </div>
+    <div class="col-auto">
+        <button type="button" class="btn btn-danger"
+                onclick="removeHallRow(this)">
+            Remove
+        </button>
+    </div>
+</div>
+
+<script>
+function removeHallRow(button) {
+    const hallForm = button.closest('.hall-form');
+    const deleteCheckbox = hallForm.querySelector('input[type="checkbox"][name$="DELETE"]');
+    const idField = hallForm.querySelector('input[name$="id"]');
+
+    if (idField && idField.value) {
+        // Existing hall → mark DELETE and hide
+        if (deleteCheckbox) {
+            deleteCheckbox.checked = true;
+            hallForm.style.display = "none";
+        }
+    } else {
+        // New unsaved hall → just remove from DOM and decrement TOTAL_FORMS
+        hallForm.remove();
+
+        // Update management form
+        const totalFormsInput = document.getElementById('id_form-TOTAL_FORMS');
+        totalFormsInput.value = parseInt(totalFormsInput.value) - 1;
+    }
+}
+</script>
+
