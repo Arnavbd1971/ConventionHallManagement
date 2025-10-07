@@ -13,13 +13,23 @@ class HallInline(admin.TabularInline):
     extra = 1
     fields = ("name", "capacity", "price_currency", "price_per_hour", "price_per_day", "is_active")
 
+class HallImageInline(admin.TabularInline):
+    model = HallImage
+    extra = 1
+    fields = ("image", "caption", "order")
+
+class HallAmenityInline(admin.TabularInline):
+    model = HallAmenity
+    extra = 1
+    fields = ("amenity",)
+
 
 @admin.register(Center)
 class CenterAdminConfig(admin.ModelAdmin):
     list_display = ("name", "city", "district", "country", "status", "contact_phone", "created_at")
     search_fields = ("name", "city", "district", "country")
     list_filter = ("status", "city", "district", "country")
-    inlines = [CenterAdminInline, HallInline]
+    inlines = [CenterAdminInline, HallInline, HallImageInline, HallAmenityInline]
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -30,31 +40,19 @@ class CenterAdminUserConfig(admin.ModelAdmin):
     list_filter = ("role",)
 
 
-class HallImageInline(admin.TabularInline):
-    model = HallImage
-    extra = 1
-    fields = ("image", "caption", "order")
-
-
-class HallAmenityInline(admin.TabularInline):
-    model = HallAmenity
-    extra = 1
-    fields = ("amenity",)
-
-
 @admin.register(Hall)
 class HallAdmin(admin.ModelAdmin):
     list_display = ("name", "center", "capacity", "price_currency", "is_active", "created_at")
     search_fields = ("name", "center__name")
     list_filter = ("is_active", "price_currency")
-    inlines = [HallImageInline, HallAmenityInline]
+    inlines = []
     readonly_fields = ("created_at", "updated_at")
 
 
 @admin.register(HallImage)
 class HallImageAdmin(admin.ModelAdmin):
-    list_display = ("hall", "caption", "order")
-    search_fields = ("hall__name", "caption")
+    list_display = ("center", "caption", "order")
+    search_fields = ("center__name", "caption")
 
 
 @admin.register(Amenity)
@@ -65,5 +63,5 @@ class AmenityAdmin(admin.ModelAdmin):
 
 @admin.register(HallAmenity)
 class HallAmenityAdmin(admin.ModelAdmin):
-    list_display = ("hall", "amenity")
-    search_fields = ("hall__name", "amenity__name")
+    list_display = ("center", "amenity")
+    search_fields = ("center__name", "amenity__name")

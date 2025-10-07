@@ -73,46 +73,81 @@
                             </div>
                         </div>
 
-                        <!-- Rent Info -->
+                        <!-- Hall Info -->
                         <h5 class="mt-5">Hall Info</h5>
                         <table class="table table-bordered">
                             <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Capacity</th>
-                                    <th>Price Per Hour</th>
-                                    <th>Price Per Day</th>
-                                    <th>Price Currency</th>
-                                    <th>Min Booking Hours</th>
-                                    <th>Latitude</th>
-                                    <th>Longitude</th>
-                                    <th>Description</th>
-                                </tr>
+                            <tr>
+                                <th>Name</th>
+                                <th>Capacity</th>
+                                <th>Price Per Hour</th>
+                                <th>Price Per Day</th>
+                                <th>Price Currency</th>
+                                <th>Min Booking Hours</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Description</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {% for hall in center.halls.all %}
-                                    <tr>
-                                        <td>{{ hall.name }}</td>
-                                        <td>{{ hall.capacity }}</td>
-                                        <td>{{ hall.price_per_hour }}</td>
-                                        <td>{{ hall.price_per_day }}</td>
-                                        <td>{{ hall.price_currency }}</td>
-                                        <td>{{ hall.min_booking_hours }}</td>
-                                        <td>{{ hall.latitude }}</td>
-                                        <td>{{ hall.longitude }}</td>
-                                        <td>{{ hall.description }}</td>
-                                    </tr>
-                                {% empty %}
-                                    <tr><td colspan="3" class="text-center">No hall info available</td></tr>
-                                {% endfor %}
+                            {% for hall in center.halls.all %}
+                            <tr>
+                                <td>{{ hall.name }}</td>
+                                <td>{{ hall.capacity }}</td>
+                                <td>{{ hall.price_per_hour }}</td>
+                                <td>{{ hall.price_per_day }}</td>
+                                <td>{{ hall.price_currency }}</td>
+                                <td>{{ hall.min_booking_hours }}</td>
+                                <td>{{ hall.latitude }}</td>
+                                <td>{{ hall.longitude }}</td>
+                                <td>{{ hall.description }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center">No hall info available</td>
+                            </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
+
+                        <!-- Hall Images -->
+                        <h5 class="mt-5">Hall Images</h5>
+                        <div class="d-flex flex-wrap">
+                            {% for img in center.center_images.all %}
+                            <div class="p-2">
+                                <img src="{{ img.image.url }}" class="img-thumbnail" width="200"
+                                     alt="{{ img.caption }}">
+                                <p class="text-center">{{ img.caption }}</p>
+                            </div>
+                            {% empty %}
+                            <p>No images available</p>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Amenities -->
+                        <h5 class="mt-5">Amenities</h5>
+                        <div class="d-flex flex-wrap align-items-start">
+                            {% for amenity in center.amenities.all %}
+                            <div class="text-center m-2">
+                                {% if amenity.icon %}
+                                <img src="{{ amenity.icon.url }}" alt="{{ amenity.name }}" width="50" height="50"
+                                     class="mb-1 rounded">
+                                {% else %}
+                                <i class="fas fa-cog fa-2x text-secondary mb-1"></i>
+                                {% endif %}
+                                <div>{{ amenity.name }}</div>
+                            </div>
+                            {% empty %}
+                            <p>No amenities available</p>
+                            {% endfor %}
+                        </div>
+
                     </div>
 
                     <div class="card-footer">
                         <a href="{% url 'services:center_list' %}" class="btn btn-secondary">Back to List</a>
                         <a href="{% url 'services:center_update' center.id %}" class="btn btn-info">Edit</a>
-                        <a href="" class="btn btn-danger"
+                        <a href="{% url 'services:center_delete' center.id %}" class="btn btn-danger"
                            onclick="return confirm('Are you sure you want to delete this hall?');">
                             Delete
                         </a>

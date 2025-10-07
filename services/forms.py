@@ -1,8 +1,18 @@
 from django import forms
-from .models import Center, Hall, HallImage
+from .models import Center, Hall, HallImage, Amenity
 from django.forms import modelformset_factory
+from .bangladesh_locations import BANGLADESH_DISTRICTS, BANGLADESH_CITIES
 
 class CenterForm(forms.ModelForm):
+    city = forms.ChoiceField(
+        choices=[("", "Select City")] + BANGLADESH_CITIES,
+        widget=forms.Select(attrs={"class": "form-select"}),
+    )
+    district = forms.ChoiceField(
+        choices=[("", "Select District")] + BANGLADESH_DISTRICTS,
+        widget=forms.Select(attrs={"class": "form-select"}),
+    )
+
     class Meta:
         model = Center
         fields = [
@@ -17,19 +27,19 @@ class CenterForm(forms.ModelForm):
             "country",
             "status",
             "contact_phone",
+            "amenities",
         ]
         widgets = {
             "owner_user": forms.Select(attrs={"class": "form-control"}),
             "description": forms.Textarea(attrs={"rows": 3, "class": "form-control"}),
             "address": forms.Textarea(attrs={"rows": 1, "class": "form-control"}),
             "name": forms.TextInput(attrs={"class": "form-control"}),
-            "city": forms.TextInput(attrs={"class": "form-control"}),
-            "district": forms.TextInput(attrs={"class": "form-control"}),
             "country": forms.TextInput(attrs={"class": "form-control"}),
             "contact_phone": forms.TextInput(attrs={"class": "form-control"}),
             "latitude": forms.NumberInput(attrs={"class": "form-control"}),
             "longitude": forms.NumberInput(attrs={"class": "form-control"}),
             "status": forms.Select(attrs={"class": "form-select"}),
+            "amenities": forms.CheckboxSelectMultiple(attrs={"class": "form-check-input"}),
         }
         labels = {
             "owner_user": "Center Owner",
@@ -96,6 +106,15 @@ HallImagesFormSet = modelformset_factory(
     extra=0,
     can_delete=True
 )
+
+class AmenityForm(forms.ModelForm):
+    class Meta:
+        model = Amenity
+        fields = ["name", "icon"]
+        widgets = {
+            "name": forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter amenity name'}),
+            "icon": forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
 
 
 

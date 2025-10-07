@@ -1,5 +1,19 @@
 <div class="hall-images-form row align-items-end mb-3">
+    {% for hidden in hall_image_form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    <div style="display:none;">
+        {{ hall_image_form.DELETE }} <!-- Hidden DELETE field -->
+    </div>
     <div class="col">
+        {% if hall_image_form.instance and hall_image_form.instance.image %}
+            <div class="mb-2">
+                <img src="{{ hall_image_form.instance.image.url }}"
+                     alt="{{ hall_image_form.instance.caption }}"
+                     class="img-thumbnail" width="150">
+            </div>
+        {% endif %}
+        {{ hall_image_form.image.label_tag }}
         {{ hall_image_form.image }}
     </div>
     <div class="col">
@@ -8,8 +22,31 @@
     </div>
     <div class="col-auto">
         <button type="button" class="btn btn-danger"
-                onclick="this.closest('.hall-images-form').remove()">
+                onclick="removeHallImageRow(this)">
             Remove
         </button>
     </div>
 </div>
+
+
+<script>
+function removeHallImageRow(button) {
+    const form = button.closest('.hall-images-form');
+    const deleteCheckbox = form.querySelector('input[type="checkbox"][name$="DELETE"]');
+    const idField = form.querySelector('input[name$="id"]');
+
+    if (idField && idField.value) {
+        // existing image
+        if (deleteCheckbox) {
+            deleteCheckbox.checked = true;
+            form.style.display = "none";
+        }
+    } else {
+        // new unsaved image
+        form.remove();
+        const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+        totalForms.value = parseInt(totalForms.value) - 1;
+    }
+}
+</script>
+

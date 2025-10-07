@@ -1,8 +1,6 @@
 {% extends "./adminlteBase.html" %}
 
-
 {% block content %}
-
 
 <!--begin::App Content Header-->
 <div class="app-content-header">
@@ -10,11 +8,11 @@
     <div class="container-fluid">
         <!--begin::Row-->
         <div class="row">
-            <div class="col-sm-6"><h3 class="mb-0">Center List</h3></div>
+            <div class="col-sm-6"><h3 class="mb-0">Amenities List</h3></div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Center List</li>
+                    <li class="breadcrumb-item active" aria-current="page">Amenities List</li>
                 </ol>
             </div>
         </div>
@@ -35,8 +33,8 @@
                 <div class="card card-info card-outline mb-4">
                     <!--begin::Header-->
                     <div class="card-header">
-                        <a href="{% url 'services:center_create'%}">
-                            <button type="button" class="btn btn-success mb-2">Create Center</button>
+                        <a href="{% url 'services:amenity_create'%}">
+                            <button type="button" class="btn btn-success mb-2">Amenity Create</button>
                         </a>
 
                     </div>
@@ -48,7 +46,7 @@
                         <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table id="center_table" class="table table-bordered table-striped dataTable dtr-inline"
+                                    <table id="amenity_table" class="table table-bordered table-striped dataTable dtr-inline"
                                            aria-describedby="example1_info">
                                         <thead>
                                         <tr>
@@ -59,49 +57,38 @@
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
                                                 colspan="1" aria-label="Browser: activate to sort column ascending"
-                                                style="">Center sName
+                                                style="">Name
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
                                                 colspan="1" aria-label="Platform(s): activate to sort column ascending"
-                                                style="">Address
-                                            </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                colspan="1"
-                                                aria-label="Engine version: activate to sort column ascending" style="">
-                                                Owner
-                                            </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                colspan="1" aria-label="CSS grade: activate to sort column ascending"
-                                                style="">Status
+                                                style="">Icon
                                             </th>
                                             <th>Actions</th>
                                         </tr>
                                         </thead>
                                         <tbody>
 
-                                        {% for center in centers %}
+                                        {% for amenity in amenities %}
                                             <tr class="{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
                                                 <td class="sorting_1 dtr-control" tabindex="0" style="">{{ forloop.counter }}.</td>
-                                                <td class="" style="">{{ center.name }}</td>
-                                                <td class="" style="">{{ center.address }}</td>
-                                                <td class="" style="">{{ center.owner_user }}</td>
-                                                <td class="" style="">{{ center.status }}</td>
+                                                <td class="" style="">{{ amenity.name }}</td>
+                                                <td class="" style=""><img src="{{ amenity.icon.url }}" alt="" height="40"></td>
                                                 <td>
                                                     <!-- View -->
-                                                    <a href="{% url 'services:center_detail' center.id%}"
+                                                    <a href="{% url 'services:amenity_detail' amenity.pk %}"
                                                        class="btn btn-sm btn-info"
                                                        title="View">
                                                         <i class="bi bi-eye"></i>
                                                     </a>
                                                     <!-- Edit -->
-                                                    <a href="{% url 'services:center_update' center.id%}"
+                                                    <a href="{% url 'services:amenity_update' amenity.pk %}"
                                                        class="btn btn-sm btn-primary"
                                                        title="Edit">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
                                                     <!-- Delete -->
                                                     <form method="post"
-                                                          action="{% url 'services:center_delete' center.id %}"
+                                                          action="{% url 'services:amenity_delete' amenity.pk %}"
                                                           style="display:inline;">
                                                         {% csrf_token %}
                                                         <button type="submit" class="btn btn-danger btn-sm"
@@ -111,6 +98,8 @@
                                                     </form>
                                                 </td>
                                             </tr>
+                                        {% empty %}
+                                        <tr><td colspan="4">No amenities found.</td></tr>
                                         {% endfor %}
                                         </tbody>
                                     </table>
@@ -120,33 +109,6 @@
                     </div>
                     <!--end::List-->
 
-                    <!--begin::Card Footer-->
-                    <script>
-                        // Example starter JavaScript for disabling form submissions if there are invalid fields
-                        (() => {
-                          'use strict';
-
-                          // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                          const forms = document.querySelectorAll('.needs-validation');
-
-                          // Loop over them and prevent submission
-                          Array.from(forms).forEach((form) => {
-                            form.addEventListener(
-                              'submit',
-                              (event) => {
-                                if (!form.checkValidity()) {
-                                  event.preventDefault();
-                                  event.stopPropagation();
-                                }
-
-                                form.classList.add('was-validated');
-                              },
-                              false,
-                            );
-                          });
-                        })();
-                    </script>
-                    <!--end::JavaScript-->
                 </div>
                 <!--end::Form Validation-->
             </div>
@@ -161,8 +123,8 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        if (!$.fn.DataTable.isDataTable('#center_table')) {
-            $('#center_table').DataTable({
+        if (!$.fn.DataTable.isDataTable('#amenity_table')) {
+            $('#amenity_table').DataTable({
                 responsive: true,
                 autoWidth: false,
             });

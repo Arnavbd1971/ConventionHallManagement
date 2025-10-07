@@ -1,0 +1,38 @@
+{% extends "./adminlteBase.html" %}
+{% block content %}
+<div class="app-content-header">
+    <h3>{% if object %}Edit Amenity{% else %}Add Amenity{% endif %}</h3>
+</div>
+
+<div class="app-content">
+    <div class="card card-info card-outline">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" class="row g-3">
+                {% csrf_token %}
+                <div class="col-md-6">
+                    {% if object and object.icon %}
+                        <div class="mt-2">
+                            <p class="mb-1 text-muted">Current Icon:</p>
+                            <img src="{{ object.icon.url }}" alt="{{ object.name }}"
+                                 class="img-thumbnail" width="120" height="120">
+                        </div>
+                    {% endif %}
+                    {{ form.icon.label_tag }}
+                    {{ form.icon }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                </div>
+
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-success">
+                        {% if object %}Update Amenity{% else %}Add Amenity{% endif %}
+                    </button>
+                    <a href="{% url 'services:amenity_list' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

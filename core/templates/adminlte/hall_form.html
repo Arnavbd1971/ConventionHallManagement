@@ -10,11 +10,11 @@
     <div class="container-fluid">
         <!--begin::Row-->
         <div class="row">
-            <div class="col-sm-6"><h3 class="mb-0">Hall Creation</h3></div>
+            <div class="col-sm-6"><h3 class="mb-0">{% if is_edit %} Edit Hall {% else %} Hall Creation {% endif %}</h3></div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Hall Creation</li>
+                    <li class="breadcrumb-item active" aria-current="page">{% if is_edit %} Edit Center {% else %} Center Creation {% endif %}</li>
                 </ol>
             </div>
         </div>
@@ -43,109 +43,42 @@
                                 <div class="col-md-6">
                                     {{ hall_form.name.label_tag }}
                                     {{ hall_form.name }}
+                                    <div id="name-check-msg" class="text-danger small mt-1"></div>
                                 </div>
-                                <div class="col-md-6">
-                                    {{ hall_form.price.label_tag }}
-                                    {{ hall_form.price }}
-                                </div>
-                                <div class="col-md-6">
-                                    {{ hall_form.location.label_tag }}
-                                    {{ hall_form.location }}
-                                </div>
-
                                 <div class="col-md-6">
                                     {{ hall_form.capacity.label_tag }}
                                     {{ hall_form.capacity }}
                                 </div>
                                 <div class="col-md-6">
-                                    {{ hall_form.batch.label_tag }}
-                                    {{ hall_form.batch }}
+                                    {{ hall_form.price_currency.label_tag }}
+                                    {{ hall_form.price_currency }}
+                                </div>
+
+                                <div class="col-md-6">
+                                    {{ hall_form.price_per_hour.label_tag }}
+                                    {{ hall_form.price_per_hour }}
                                 </div>
                                 <div class="col-md-6">
-                                    {{ hall_form.area_size.label_tag }}
-                                    {{ hall_form.area_size }}
+                                    {{ hall_form.price_per_day.label_tag }}
+                                    {{ hall_form.price_per_day }}
                                 </div>
                                 <div class="col-md-6">
-                                    {{ hall_form.parking_capacity.label_tag }}
-                                    {{ hall_form.parking_capacity }}
+                                    {{ hall_form.min_booking_hours.label_tag }}
+                                    {{ hall_form.min_booking_hours }}
                                 </div>
                                 <div class="col-md-6">
-                                    {{ hall_form.year_built.label_tag }}
-                                    {{ hall_form.year_built }}
+                                    {{ hall_form.latitude.label_tag }}
+                                    {{ hall_form.latitude }}
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        {{ hall_form.is_government_property }}
-                                        {{ hall_form.is_government_property.label_tag }}
-                                    </div>
+                                <div class="col-md-6">
+                                    {{ hall_form.longitude.label_tag }}
+                                    {{ hall_form.longitude }}
                                 </div>
                                 <div class="col-md-12">
                                     {{ hall_form.description.label_tag }}
                                     {{ hall_form.description }}
                                 </div>
                             </div>
-
-                            <!--begin::Rent Info-->
-                            <h5 class="mt-5">Rent Info</h5>
-                            <div id="rent-forms">
-                                {{ rent_formset.management_form }}
-                                {% for rent_form in rent_formset %}
-                                {% include "adminlte/rent_form.html" with rent_form=rent_form %}
-                                {% endfor %}
-                            </div>
-
-                            <button type="button"
-                                    class="btn btn-outline-primary"
-                                    id="add-rent-btn"
-                                    hx-get="{% url 'services:rent_form_partial' %}?form_index={{ rent_formset.total_form_count }}"
-                                    hx-include="#rent-forms"
-                                    hx-target="#rent-forms"
-                                    hx-swap="beforeend">
-                                + Add Rent Info
-                            </button>
-                            <script>
-                                let formIndex = {{ rent_formset.total_form_count }};
-
-                                document.body.addEventListener('htmx:afterSwap', function(evt) {
-                                    if (evt.target.id === "rent-forms") {
-                                        formIndex++;
-                                        document.getElementById('id_form-TOTAL_FORMS').value = formIndex;
-                                    }
-                                });
-                            </script>
-                            <hr>
-                            <!--end::Rent Info-->
-
-                            <!--begin::Hall Images-->
-                            <h5 class="mt-5">Hall Images</h5>
-                            <div id="hall-images-forms">
-                                {{ hall_images_formset.management_form }}
-                                {% for hall_image_form in hall_images_formset %}
-                                {% include "adminlte/hall_images_form.html" with hall_image_form=hall_image_form %}
-                                {% endfor %}
-                            </div>
-
-                            <button type="button"
-                                    class="btn btn-outline-primary"
-                                    id="add-hall-image-btn"
-                                    hx-get="{% url 'services:hall_image_form_partial' %}?form_index={{ hall_image_formset.total_form_count }}"
-                                    hx-include="#hall-images-forms"
-                                    hx-target="#hall-images-forms"
-                                    hx-swap="beforeend">
-                                + Add Hall Images
-                            </button>
-                            <script>
-                                let formIndex = {{ rent_formset.total_form_count }};
-
-                                document.body.addEventListener('htmx:afterSwap', function(evt) {
-                                    if (evt.target.id === "rent-forms") {
-                                        formIndex++;
-                                        document.getElementById('id_form-TOTAL_FORMS').value = formIndex;
-                                    }
-                                });
-                            </script>
-                            <hr>
-                            <!--end::Hall Images-->
                         </div>
                         <!--end::Body-->
                         <!--begin::Footer-->
@@ -183,6 +116,46 @@
                         })();
                     </script>
                     <!--end::JavaScript-->
+
+                    <!--begin hall data check::JavaScript-->
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const nameInput = document.getElementById("id_name");
+                            const msgDiv = document.getElementById("name-check-msg");
+
+                            const submitBtn = document.querySelector('button[type="submit"]');
+
+                            let timeout = null;
+
+                            nameInput.addEventListener("input", function() {
+                                clearTimeout(timeout);
+                                timeout = setTimeout(() => {
+                                    const name = nameInput.value.trim();
+                                    if (name.length === 0) {
+                                        msgDiv.textContent = "";
+                                        return;
+                                    }
+
+                                    fetch(`/services/centers/check-data/?hallname=${encodeURIComponent(name)}`)
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.exists) {
+                                                msgDiv.textContent = data.message;
+                                                submitBtn.disabled = true;
+                                            } else {
+                                                msgDiv.textContent = "";
+                                                submitBtn.disabled = false;
+                                            }
+                                        })
+                                        .catch(err => {
+                                            console.error(err);
+                                            submitBtn.disabled = false;
+                                        });
+                                }, 400); // small debounce delay
+                            });
+                        });
+                        </script>
+                    <!--end hall data check::JavaScript-->
                 </div>
                 <!--end::Form Validation-->
             </div>

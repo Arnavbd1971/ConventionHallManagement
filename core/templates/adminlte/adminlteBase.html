@@ -26,7 +26,6 @@
     <!--begin::Accessibility Features-->
     <!-- Skip links will be dynamically added by accessibility.js -->
     <meta name="supported-color-schemes" content="light dark"/>
-    <link rel="preload" href="{%static './css/adminlte.css' %}" as="style"/>
     <!--end::Accessibility Features-->
     <!--begin::Fonts-->
     <link
@@ -51,16 +50,21 @@
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
             crossorigin="anonymous"
     />
-    <!--end::Third Party Plugin(Bootstrap Icons)-->
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/buttons.bootstrap4.min.css' %}">
+
+
     <!--begin::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="{%static './css/adminlte.css' %}"/>
     <!--end::Required Plugin(AdminLTE)-->
+
 </head>
 <!--end::Head-->
 <!--begin::Body-->
 <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
-
-
 
 
 <div class="app-wrapper">
@@ -341,10 +345,35 @@
                                     <p>Hall List</p>
                                 </a>
                             </li>
+<!--                            <li class="nav-item">-->
+<!--                                <a href="" class="nav-link">-->
+<!--                                    <i class="nav-icon bi bi-circle"></i>-->
+<!--                                    <p>Hall Create</p>-->
+<!--                                </a>-->
+<!--                            </li>-->
+                        </ul>
+                    </li>
+
+                    <!-- Amenity -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon bi bi-palette"></i>
+                            <p>
+                                Amenities
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="" class="nav-link">
+                                <a href="{% url 'services:amenity_list'%}" class="nav-link">
                                     <i class="nav-icon bi bi-circle"></i>
-                                    <p>Hall Create</p>
+                                    <p>Amenity List</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'services:amenity_create'%}" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Amenity Create</p>
                                 </a>
                             </li>
                         </ul>
@@ -398,9 +427,18 @@
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
         crossorigin="anonymous"
 ></script>
+
+<!--datatable-->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{%static './js/jquery.dataTables.min.js' %}"></script>
+<script src="{%static './js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{%static './js/dataTables.responsive.min.js' %}"></script>
+<script src="{%static './js/dataTables.buttons.min.js' %}"></script>
+
 <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
 <script src="{%static './js/adminlte.js' %}"></script>
 <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+
 <script>
     const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
     const Default = {
@@ -583,26 +621,28 @@
 
 {% if messages %}
 <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
-  {% for message in messages %}
-  <div class="toast align-items-center text-bg-{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}danger{% else %}info{% endif %} border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body">
-        {{ message }}
-      </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    {% for message in messages %}
+    <div class="toast align-items-center text-bg-{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}danger{% else %}info{% endif %} border-0 mb-2"
+         role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ message }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+        </div>
     </div>
-  </div>
-  {% endfor %}
+    {% endfor %}
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const toastElList = [].slice.call(document.querySelectorAll('.toast'))
-  toastElList.map(function (toastEl) {
-    const toast = new bootstrap.Toast(toastEl)
-    toast.show()
-  })
-})
+    document.addEventListener("DOMContentLoaded", function () {
+      const toastElList = [].slice.call(document.querySelectorAll('.toast'))
+      toastElList.map(function (toastEl) {
+        const toast = new bootstrap.Toast(toastEl)
+        toast.show()
+      })
+    })
 </script>
 {% endif %}
 
