@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path("", include(("core.urls", "core"), "core")),
-                  path("services/", include(("services.urls", "services"), "services"))
+                  path("services/", include(("services.urls", "services"), "services")),
               ] + static(settings.STATIC_URL)
 
 if settings.DEBUG:  # only in dev, not production

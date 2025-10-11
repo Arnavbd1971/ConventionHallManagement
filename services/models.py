@@ -107,18 +107,5 @@ class Amenity(models.Model):
         return self.name
 
 
-# -------------------------
-# Hall Amenities (M2M)
-# -------------------------
-class HallAmenity(models.Model):
-    center = models.ForeignKey(Center, on_delete=models.CASCADE, related_name="center_amenities", default=1)
-    amenity = models.ForeignKey(Amenity, on_delete=models.CASCADE, related_name="amenity_halls")
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['center', 'amenity'], name='unique_center_amenity')
-        ]
-
-    def __str__(self):
-        return f"{self.center.name} - {self.amenity.name}"
 

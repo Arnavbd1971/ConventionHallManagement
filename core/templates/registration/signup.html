@@ -1,47 +1,95 @@
 {% extends "./auth.html" %}
+{% load static %}
+
 {% block content %}
-<div class="shadow-wrap">
- <div class="form-wrap">
-  <h3>Signup </h3>
-<form method="post">
-  {% csrf_token %}
+<body class="login-page bg-body-secondary">
+<div class="login-box">
+    <div class="login-logo">
+        <a href="#"><b>Admin</b>LTE</a>
+    </div>
 
-  <div class="form-group">
-    {{ form.username.label_tag }}
-    {{ form.username }}
-<!--    {% if form.username.help_text %}-->
-<!--      <span class="form-text text-muted">{{ form.username.help_text|safe }}</span>-->
-<!--    {% endif %}-->
-  </div>
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">Register a new {{ user_type }} account</p>
 
-  <div class="form-group">
-    {{ form.password1.label_tag }}
-    {{ form.password1 }}
-<!--    {% if form.password1.help_text %}-->
-<!--      <span class="form-text text-muted">{{ form.password1.help_text|safe }}</span>-->
-<!--    {% endif %}-->
-  </div>
+            <form method="post" action="{{ request.path }}">
+                {% csrf_token %}
 
-  <div class="form-group">
-    {{ form.password2.label_tag }}
-    {{ form.password2 }}
-<!--    {% if form.password2.help_text %}-->
-<!--      <span class="form-text text-muted">{{ form.password2.help_text|safe }}</span>-->
-<!--    {% endif %}-->
-  </div>
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
 
-  <div class="form-group">
-      <label>Type</label>
-    {{ form.type }}
-<!--    {% if form.password2.help_text %}-->
-<!--      <span class="form-text text-muted">{{ form.password2.help_text|safe }}</span>-->
-<!--    {% endif %}-->
-  </div>
+                {% for field in form %}
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            {% if field.name == "password1" or field.name == "password2" %}
+                                <i class="bi bi-lock"></i>
+                            {% elif field.name == "email" %}
+                                <i class="bi bi-envelope"></i>
+                            {% elif field.name == "username" %}
+                                <i class="bi bi-person-circle"></i>
+                            {% elif field.name == "phone" %}
+                                <i class="bi bi-phone"></i>
+                            {% else %}
+                                <i class="bi bi-person"></i>
+                            {% endif %}
+                        </span>
+                        {{ field }}
+                    </div>
+                    {% for error in field.errors %}
+                        <div class="text-danger small mb-2">{{ error }}</div>
+                    {% endfor %}
+                {% endfor %}
 
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
 
-<a class="signup-link" href="{% url "core:login" %}">Login</a>
+
+            <div class="social-auth-links text-center mb-3 d-grid gap-2">
+                <p>- OR -</p>
+                <a href="#" class="btn btn-primary">
+                    <i class="bi bi-facebook me-2"></i> Sign up using Facebook
+                </a>
+                <a href="#" class="btn btn-danger">
+                    <i class="bi bi-google me-2"></i> Sign up using Google
+                </a>
+            </div>
+
+            <p class="mb-0 text-center">
+                <a href="{% url 'core:login' %}" class="text-center">Already have an account? Sign in</a>
+            </p>
+        </div>
+    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="{% static './js/adminlte.js' %}"></script>
+
+{% if messages %}
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index:1100">
+    {% for message in messages %}
+    <div class="toast align-items-center text-bg-{{ message.tags }} border-0 mb-2" role="alert">
+        <div class="d-flex">
+            <div class="toast-body">{{ message }}</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+    {% endfor %}
 </div>
-{% endblock content %}a
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".toast").forEach(t => new bootstrap.Toast(t).show());
+    });
+</script>
+{% endif %}
+</body>
+{% endblock content %}

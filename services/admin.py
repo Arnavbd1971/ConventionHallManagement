@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Center, CenterAdmin, Hall, HallImage, Amenity, HallAmenity
+from .models import Center, CenterAdmin, Hall, HallImage, Amenity
 
 
 class CenterAdminInline(admin.TabularInline):
@@ -18,18 +18,13 @@ class HallImageInline(admin.TabularInline):
     extra = 1
     fields = ("image", "caption", "order")
 
-class HallAmenityInline(admin.TabularInline):
-    model = HallAmenity
-    extra = 1
-    fields = ("amenity",)
-
 
 @admin.register(Center)
 class CenterAdminConfig(admin.ModelAdmin):
     list_display = ("name", "city", "district", "country", "status", "contact_phone", "created_at")
     search_fields = ("name", "city", "district", "country")
     list_filter = ("status", "city", "district", "country")
-    inlines = [CenterAdminInline, HallInline, HallImageInline, HallAmenityInline]
+    inlines = [CenterAdminInline, HallInline, HallImageInline]
     readonly_fields = ("created_at", "updated_at")
 
 
@@ -61,7 +56,3 @@ class AmenityAdmin(admin.ModelAdmin):
     search_fields = ("name",)
 
 
-@admin.register(HallAmenity)
-class HallAmenityAdmin(admin.ModelAdmin):
-    list_display = ("center", "amenity")
-    search_fields = ("center__name", "amenity__name")
