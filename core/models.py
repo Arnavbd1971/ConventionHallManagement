@@ -31,3 +31,36 @@ class CUser(AbstractUser):
         self.verification_code = str(random.randint(100000, 999999))
         self.verification_sent_at = timezone.now()
         self.save(update_fields=["verification_token", "verification_code", "verification_sent_at"])
+
+class WebsiteConfiguration(models.Model):
+    site_name = models.CharField(max_length=150, default="My Website")
+    logo = models.ImageField(upload_to="website/logo/", null=True, blank=True)
+    about_us = models.TextField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.site_name
+
+
+class SliderImage(models.Model):
+    website = models.ForeignKey(
+        WebsiteConfiguration,
+        related_name="sliders",
+        on_delete=models.CASCADE,
+        default=1
+    )
+    image = models.ImageField(upload_to="website/sliders/")
+    caption = models.CharField(max_length=255, blank=True, null=True)
+    caption_sub = models.CharField(max_length=255, blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    def save(self, *args, **kwargs):
+        # Auto-assign order if not set
+        if self.order is None:
+            last_order = SliderImage.objects.filter(website=self.website).aggregate(models.Max('order'))['order__max'] or 0
+            self.order = last_order + 1
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.caption or f"Slider {self.id}"

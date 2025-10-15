@@ -66,6 +66,8 @@ class Hall(models.Model):
     slug = models.SlugField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     capacity = models.IntegerField(blank=True, null=True)
+    batch = models.IntegerField(blank=True, null=True, default=0)
+    size = models.IntegerField(blank=True, null=True, default=0)
     price_currency = models.CharField(max_length=10, default="BDT")
     price_per_hour = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     price_per_day = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)

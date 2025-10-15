@@ -51,6 +51,8 @@ class HallForm(forms.ModelForm):
         fields = [
             "name",
             "capacity",
+            "batch",
+            "size",
             "price_currency",
             "price_per_hour",
             "price_per_day",
@@ -62,6 +64,8 @@ class HallForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control"}),
             "capacity": forms.NumberInput(attrs={"class": "form-control", "min": 1}),
+            "batch": forms.NumberInput(attrs={"class": "form-control", "min": 1}),
+            "size": forms.NumberInput(attrs={"class": "form-control", "min": 1}),
             "price_currency": forms.TextInput(attrs={"class": "form-control"}),
             "price_per_hour": forms.NumberInput(attrs={"class": "form-control", "step": "0.01"}),
             "price_per_day": forms.NumberInput(attrs={"class": "form-control", "step": "0.01"}),
@@ -71,17 +75,6 @@ class HallForm(forms.ModelForm):
             "description": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
         }
 
-
-# class HallRentForm(forms.ModelForm):
-#     class Meta:
-#         model = HallRent
-#         fields = ["season", "shift", "price"]
-#         widgets = {
-#             "season": forms.Select(attrs={'class':'form-select'}),
-#             "shift": forms.Select(attrs={'class':'form-select'}),
-#             "price": forms.NumberInput(attrs={'class':'form-control'})
-#         }
-#
 HallFormSet = modelformset_factory(
     Hall,
     form=HallForm,

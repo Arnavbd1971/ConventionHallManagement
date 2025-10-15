@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CUser
+from .models import CUser, WebsiteConfiguration, SliderImage
+from django.forms import modelformset_factory
+
 
 class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(
@@ -60,3 +62,29 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class WebsiteConfigurationForm(forms.ModelForm):
+    class Meta:
+        model = WebsiteConfiguration
+        fields = ["site_name", "logo", "about_us"]
+        widgets = {
+            "site_name": forms.TextInput(attrs={"class": "form-control"}),
+            "about_us": forms.Textarea(attrs={"rows": 3, "class": "form-control"}),
+        }
+
+
+class SliderImageForm(forms.ModelForm):
+    class Meta:
+        model = SliderImage
+        fields = ["image", "caption", "caption_sub", "is_active"]
+        widgets = {
+            "caption": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter caption"}),
+            "caption_sub": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter sub caption"}),
+        }
+
+SliderFormSet = modelformset_factory(
+    SliderImage,
+    form=SliderImageForm,
+    extra=0,
+    can_delete=True
+)

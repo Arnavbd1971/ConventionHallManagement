@@ -1,0 +1,51 @@
+<div class="slider-images-form row align-items-end mb-3">
+    {% for hidden in slider_image_form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    <div style="display:none;">
+        {{ slider_image_form.DELETE }}
+    </div>
+
+    <div class="col-md-3">
+        {% if slider_image_form.instance and slider_image_form.instance.image %}
+            <div class="mb-2">
+                <img src="{{ slider_image_form.instance.image.url }}" class="img-thumbnail" width="150">
+            </div>
+        {% endif %}
+        {{ slider_image_form.image.label_tag }}
+        {{ slider_image_form.image }}
+    </div>
+
+    <div class="col-md-3">
+        {{ slider_image_form.caption.label_tag }}
+        {{ slider_image_form.caption }}
+    </div>
+
+    <div class="col-md-3">
+        {{ slider_image_form.caption_sub.label_tag }}
+        {{ slider_image_form.caption_sub }}
+    </div>
+
+    <div class="col-md-1 text-end">
+        <button type="button" class="btn btn-danger btn-sm" onclick="removeSliderImageRow(this)">
+            Remove
+        </button>
+    </div>
+</div>
+
+<script>
+function removeSliderImageRow(button) {
+    const form = button.closest('.slider-images-form');
+    const deleteCheckbox = form.querySelector('input[name$="-DELETE"]');
+    const idField = form.querySelector('input[name$="-id"]');
+    const totalForms = document.getElementById('id_sliderimage-TOTAL_FORMS');
+
+    if (idField && idField.value) {
+        deleteCheckbox.checked = true;
+        form.style.display = "none";
+    } else {
+        form.remove();
+        totalForms.value = parseInt(totalForms.value) - 1;
+    }
+}
+</script>
