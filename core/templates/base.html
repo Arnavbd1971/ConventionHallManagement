@@ -35,7 +35,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md mt-1 mb-1">
-                <a href="#" class="btn btn-secondary rounded float-right mr-3 ">Center SignIn / SignUp</a>
+                <a href="{% url 'core:signup_center_owner' %}" class="btn btn-secondary rounded float-right mr-3 ">Center SignIn / SignUp</a>
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
     <div class="container mt-2">
         <a class="navbar-brand" href="{% url 'core:home' %}">
             {% if web_config.logo %}
-                <img src="{{ web_config.logo.url }}" alt="{{ web_config.site_name }}" height="40">
+                <img src="{{ web_config.logo.url }}" alt="{{ web_config.site_name }}" height="{{ web_config.logo_size }}">
             {% else %}
             <span>{{ web_config.site_name }}</span>
             {% endif %}
@@ -61,7 +61,7 @@
 <!--                <li class="nav-item"><a href="{% url 'services:dashboard'%}" class="nav-link">Admin</a></li>-->
                 <li class="nav-item"><a href="#" class="nav-link">Browse Centers</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">About Us</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">SignIn / SignUp</a></li>
+                <li class="nav-item"><a href="{% url 'core:signup_customer' %}" class="nav-link">SignIn / SignUp</a></li>
             </ul>
         </div>
     </div>

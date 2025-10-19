@@ -66,9 +66,10 @@ class CustomUserCreationForm(UserCreationForm):
 class WebsiteConfigurationForm(forms.ModelForm):
     class Meta:
         model = WebsiteConfiguration
-        fields = ["site_name", "logo", "about_us"]
+        fields = ["site_name", "logo", 'logo_size', "about_us"]
         widgets = {
             "site_name": forms.TextInput(attrs={"class": "form-control"}),
+            "logo_size": forms.TextInput(attrs={"class": "form-control"}),
             "about_us": forms.Textarea(attrs={"rows": 3, "class": "form-control"}),
         }
 

@@ -15,6 +15,8 @@ from services.models import Hall, Center
 from django.db.models import Q
 from django.utils import timezone
 from datetime import timedelta
+from django.core.paginator import Paginator
+from django.http import JsonResponse
 
 
 # @login_required
@@ -22,21 +24,36 @@ def home(request):
     web_config = WebsiteConfiguration.objects.first()
     sliders = SliderImage.objects.filter(is_active=True).order_by("id")
     centers = Center.objects.filter(status="approved").order_by("-id")
+
+    paginator = Paginator(centers, 4)  # Show 4 centers at a time
+    page_number = request.GET.get("page", 1)
+    page_obj = paginator.get_page(page_number)
+
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        html = render_to_string("adminlte/center_cards.html", {"centers": page_obj}, request=request)
+        return JsonResponse({
+            "html": html,
+            "has_next": page_obj.has_next()
+        })
+
     return render(request, "home.html", {
-        "centers": centers,
+        "centers": page_obj,
         "web_config": web_config,
         "sliders": sliders,
     })
 
-def hallDetail(request, pk):
-    hall = get_object_or_404(Hall, pk=pk)
-    hall_images = hall.images.all()
-    hall_rents = hall.rents.all()
+def centerDetail(request, pk):
+    center = get_object_or_404(Center, pk=pk)
+    center_images = center.center_images.all()
+    halls = center.halls.all()
 
-    return render(request, "hall_details.html", {
-        "hall": hall,
-        "hall_images": hall_images,
-        "hall_rents": hall_rents,
+    web_config = WebsiteConfiguration.objects.first()
+
+    return render(request, "center_detail.html", {
+        "center": center,
+        "center_images": center_images,
+        "halls": halls,
+        "web_config": web_config,
     })
 
 

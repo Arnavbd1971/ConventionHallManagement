@@ -1,0 +1,46 @@
+
+{%load static%}
+{% for center in centers %}
+<div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+    <div class="center-card d-flex flex-row align-items-stretch shadow-sm">
+        <!-- Image -->
+        <div class="center-image">
+            {% if center.center_images.first %}
+            <img src="{{ center.center_images.first.image.url }}" alt="{{ center.name }}">
+            {% else %}
+            <img src="{% static 'assets/website/images/room-6.jpg' %}" alt="Default image">
+            {% endif %}
+            <span class="badge bg-dark text-white position-absolute top-0 start-0 m-2">FOR RENT</span>
+        </div>
+
+        <!-- Info -->
+        <div class="center-info d-flex flex-column justify-content-between p-3 flex-grow-1">
+            <div>
+                <h5 class="fw-bold mb-1">{{ center.name }}</h5>
+                <p class="text-muted mb-2 small">{{ center.address }}</p>
+                {% if center.halls.first.capacity or center.halls.first.batch or center.halls.first.size %}
+                <p class="mb-2">
+                    {% if center.halls.first.capacity %}
+                    <strong>Capacity:</strong> {{ center.halls.first.capacity }}&nbsp;&nbsp;
+                    {% endif %}
+                    {% if center.halls.first.batch %}
+                    <strong>Batch:</strong> {{ center.halls.first.batch }}&nbsp;&nbsp;
+                    {% endif %}
+                    {% if center.halls.first.size %}
+                    <strong>Sq Ft:</strong> {{ center.halls.first.size }}
+                    {% endif %}
+                </p>
+                {% endif %}
+                <p class="text-muted small mb-0">{{ center.category.name }}</p>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <h6 class="text-danger fw-bold mb-0">BDT {{ center.halls.first.price_per_hour }}/Hour</h6>
+                <a href="{% url 'core:center_detail' center.id %}" class="btn btn-danger btn-sm rounded-pill px-3">
+                    Details <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}

@@ -10,56 +10,75 @@
 
 <div class="app-content">
     <div class="container-fluid">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <h4>Website Configuration</h4>
-            <div class="mb-3">
-                {{ config_form.site_name.label_tag }}
-                {{ config_form.site_name }}
+        <!--begin::Row-->
+        <div class="row g-4">
+            <!--begin::Col-->
+            <div class="col-md-12">
+                <!--begin::Form Validation-->
+                <div class="card card-info card-outline mb-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-12 mb-3">
+                                    {{ config_form.site_name.label_tag }}
+                                    {{ config_form.site_name }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {% if config_form.instance and config_form.instance.logo %}
+                                        <div class="mb-2">
+                                            <img src="{{ config_form.instance.logo.url }}" class="img-thumbnail" width="150">
+                                        </div>
+                                    {% endif %}
+                                    {{ config_form.logo.label_tag }}
+                                    {{ config_form.logo }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ config_form.logo_size.label_tag }}
+                                    {{ config_form.logo_size }}
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    {{ config_form.about_us.label_tag }}
+                                    {{ config_form.about_us }}
+                                </div>
+                                <hr>
+
+                                <h5 class="mt-5">Slider Images</h5>
+                                <div id="slider-images-forms">
+                                    {{ slider_images_formset.management_form }}
+                                    {% for form in slider_images_formset %}
+                                    {{ form.id }}
+                                    {% include "adminlte/slider_images_form.html" with slider_image_form=form %}
+                                    {% endfor %}
+                                </div>
+                                <button type="button"
+                                        class="btn btn-outline-primary"
+                                        id="add-slider-image-btn"
+                                        hx-get="{% url 'core:slider_image_form_partial' %}?form_index={{ slider_images_formset.total_form_count }}"
+                                        hx-include="#slider-images-forms"
+                                        hx-target="#slider-images-forms"
+                                        hx-swap="beforeend">
+                                    + Add Slider Images
+                                </button>
+                                <script>
+                                    let sliderImageFormIndex = {{ slider_images_formset.total_form_count }};
+                                    document.body.addEventListener('htmx:afterSwap', function(evt) {
+                                        if (evt.target.id === "slider-images-forms") {
+                                            sliderImageFormIndex++;
+                                            document.getElementById('id_sliderimage-TOTAL_FORMS').value = sliderImageFormIndex;
+                                        }
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success">Save Configuration</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="mb-3">
-                {{ config_form.logo.label_tag }}
-                {{ config_form.logo }}
-            </div>
-            <div class="mb-3">
-                {{ config_form.about_us.label_tag }}
-                {{ config_form.about_us }}
-            </div>
-
-            <hr>
-
-            <h5 class="mt-5">Slider Images</h5>
-            <div id="slider-images-forms">
-                {{ slider_images_formset.management_form }}
-                {% for form in slider_images_formset %}
-                {{ form.id }}
-                {% include "adminlte/slider_images_form.html" with slider_image_form=form %}
-                {% endfor %}
-            </div>
-
-            <button type="button"
-                    class="btn btn-outline-primary"
-                    id="add-hall-image-btn"
-                    hx-get="{% url 'core:slider_image_form_partial' %}?form_index={{ slider_images_formset.total_form_count }}"
-                    hx-include="#slider-images-forms"
-                    hx-target="#slider-images-forms"
-                    hx-swap="beforeend">
-                + Add Slider Images
-            </button>
-
-            <script>
-                let sliderImageFormIndex = {{ slider_images_formset.total_form_count }};
-                document.body.addEventListener('htmx:afterSwap', function(evt) {
-                    if (evt.target.id === "slider-images-forms") {
-                        sliderImageFormIndex++;
-                        document.getElementById('id_sliderimage-TOTAL_FORMS').value = sliderImageFormIndex;
-                    }
-                });
-            </script>
-
-            <hr>
-            <button type="submit" class="btn btn-success">Save Configuration</button>
-        </form>
+        </div>
     </div>
 </div>
 

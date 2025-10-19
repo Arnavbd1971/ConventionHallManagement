@@ -1,0 +1,263 @@
+{%extends 'base.html'%}
+{%load static%}
+
+{%block content%}
+<!--<div class="hero-wrap" style="background-image: url('{%static 'assets/website/images/bg_3.jpg' %}');">-->
+<div class="hero-wrap" style="height:400px; background-image: url('{%static 'assets/website/images/bg_3.jpg' %}');">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text d-flex align-itemd-center justify-content-center" style="height:280px;">
+            <div class="col-md-9 ftco-animate text-center d-flex align-items-end justify-content-center">
+                <div class="text">
+                    <p class="breadcrumbs mb-2"><span class="mr-2"><a href="{% url 'core:home' %}">Home</a></span>
+                        <span>Center Detail</span></p>
+                    <h1 class="mb-4 bread">Center Detail</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <!-- slider start-->
+                    <div class="col-md-12 ftco-animate">
+                        <div class="single-slider owl-carousel">
+                            {% for img in center_images %}
+                            <div class="item">
+                                <div class="room-img" style="background-image: url('{{ img.image.url }}');"></div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- slider end-->
+
+                    <!--                    name and description start-->
+                    <div class="col-md-12 room-single mt-4  ftco-animate">
+                        <h2 class="mb-2">{{center.name}}<span
+                                class="badge bg-dark text-white position-absolute top-0 start-0 m-2"
+                                style="font-size:10px">FOR RENT</span></h2>
+                        <p style="color:black">📍 {{center.address}}</p>
+                        <h2 class="mt-4">Description</h2>
+                        <h5 class="mt-2">{{center.description}}</h5>
+                    </div>
+                    <!--                    name and description end-->
+
+                    <!-- Halls Start-->
+                    <div class="col-md-12 ftco-animate">
+                        <section class="ftco-section">
+                            <div class="container">
+                                <div class="row justify-content-center mb-5 pb-3">
+                                    <div class="col-md-7 heading-section text-center ftco-animate">
+                                        <span class="subheading">{{center.name}}</span>
+                                        <h2>Halls</h2>
+                                    </div>
+                                </div>
+                                <div class="row d-flex">
+                                    {% for hall in halls %}
+                                    <div class="{% if halls|length == 1 %}
+                                                    col-md-12
+                                                {% elif halls|length == 2 %}
+                                                    col-md-6
+                                                {% else %}
+                                                    col-md-4
+                                                {% endif %} d-flex ftco-animate">
+                                        <div class="blog-entry align-self-stretch center-card shadow-sm p-4">
+                                            <div class="text mt-3 text-center">
+                                                <div class="meta mb-2">
+                                                    <div><a href="#">Last Updated {{ hall.updated_at|date:"M. d, Y" }}
+                                                        at {{ hall.updated_at|time:"h:i A" }}</a></div>
+                                                </div>
+                                                <h3 class="heading"><a href="#">{{hall.name}}</a></h3>
+                                                <p style="color: black">{{hall.description}}</p>
+
+                                                <!-- Font Awesome CDN -->
+                                                <link rel="stylesheet"
+                                                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+                                                <div class="hall-info d-flex flex-wrap justify-content-center gap-4 mt-5 mb-5 text-center">
+                                                    <div class="row">
+                                                        <div class="col-md-4 info-item">
+                                                            <i class="fa-solid fa-couch"></i>
+                                                            <h5>
+                                                                <span>Capacity</span><br>
+                                                                {{ hall.capacity }}
+                                                            </h5>
+                                                        </div>
+
+                                                        <div class="col-md-4 info-item">
+                                                            <i class="fa-solid fa-utensils"></i>
+                                                            <h5>
+                                                                <span>Batch</span><br>
+                                                                {{ hall.batch }}
+                                                            </h5>
+                                                        </div>
+
+                                                        <div class="col-md-4 info-item">
+                                                            <i class="fa-solid fa-house-chimney"></i>
+                                                            <h5>
+                                                                <span>Area Size</span><br>
+                                                                {{ hall.size }} Sq Ft
+                                                            </h5>
+                                                        </div>
+
+                                                        <div class="col-md-4 info-item">
+                                                            <i class="fa-solid fa-money-bill-wave"></i>
+                                                            <h5>
+                                                                <span>Price Per Hour</span><br>
+                                                                {{ hall.price_per_hour }} {{ hall.price_currency }}
+                                                            </h5>
+                                                        </div>
+
+                                                        <div class="col-md-4 info-item">
+                                                            <i class="fa-solid fa-money-bill-wave"></i>
+                                                            <h5>
+                                                                <span>Price Per Day</span><br>
+                                                                {{ hall.price_per_day }} {{ hall.price_currency }}
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-center mt-4">
+                                                    <button id="load-more-btn"
+                                                            class="btn btn-danger px-4 py-2 rounded-pill">
+                                                        <span class="btn-text">Book Now</span>
+                                                        <span class="spinner-border spinner-border-sm d-none"
+                                                              role="status" aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <!-- Halls end-->
+
+                    <!--                    Amenitis start-->
+                    <section class="ftco-section">
+                        <div class="container">
+                            <div class="row justify-content-center mb-5 pb-3">
+                                <div class="col-md-7 heading-section text-center ftco-animate">
+                                    <span class="subheading">{{ center.name }}</span>
+                                    <h2 class="mb-4">Features</h2>
+                                </div>
+                            </div>
+
+                            <div class="row d-flex justify-content-center">
+                                {% for amenity in center.amenities.all %}
+                                <div class="col-md px-md-1 d-flex align-self-stretch ftco-animate">
+                                    <div class="media block-6 services py-4 d-block text-center">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="icon d-flex align-items-center justify-content-center">
+                                                {% if amenity.icon %}
+                                                <img src="{{ amenity.icon.url }}" alt="{{ amenity.name }}" class="img-fluid amenity-icon" style="width:50%">
+                                                {% else %}
+                                                <span class="flaticon-star"></span> <!-- fallback icon -->
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="media-body">
+                                            <h3 class="heading mb-3">{{ amenity.name }}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="col-md-12 text-center">
+                                    <p>No amenities listed for this center yet.</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </section>
+                    <!--   Amenitis end-->
+
+
+                    <!--                    Center video start-->
+                    <!--                    <div class="col-md-12 room-single ftco-animate mb-5 mt-4">-->
+                    <!--                        <h3 class="mb-4">Take A Tour</h3>-->
+                    <!--                        <div class="block-16">-->
+                    <!--                            <figure>-->
+                    <!--                                <img src="{%static 'assets/website/images/room-4.jpg' %}" alt="Image placeholder"-->
+                    <!--                                     class="img-fluid">-->
+                    <!--                                <a href="https://vimeo.com/45830194" class="play-button popup-vimeo"><span-->
+                    <!--                                        class="icon-play"></span></a>-->
+                    <!--                            </figure>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                    Center video end-->
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .hall-info {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.info-item {
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #2f89fc;
+}
+
+.info-item i {
+    font-size: 40px;
+    margin-bottom: 8px;
+}
+
+.info-item h6 {
+    font-size: 15px;
+    color: #000;
+    margin-bottom: 2px;
+}
+
+.info-item span {
+    font-size: 14px;
+    color: #000;
+}
+
+@media (max-width: 768px) {
+    .info-item {
+        width: 100px;
+    }
+}
+
+    /* === CARD BASE === */
+    .center-card {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      height: 100%;
+    }
+
+    .center-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* subtle shadow */
+    .shadow-sm {
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+
+</style>
+{%endblock%}

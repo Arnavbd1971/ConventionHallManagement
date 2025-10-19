@@ -35,6 +35,7 @@ class CUser(AbstractUser):
 class WebsiteConfiguration(models.Model):
     site_name = models.CharField(max_length=150, default="My Website")
     logo = models.ImageField(upload_to="website/logo/", null=True, blank=True)
+    logo_size = models.CharField(max_length=150, default="50")
     about_us = models.TextField(null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
