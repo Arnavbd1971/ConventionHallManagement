@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Custom Apps
     'core',
     'services',
+    'bookings',
 
 
 ]

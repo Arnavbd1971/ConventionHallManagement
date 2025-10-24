@@ -65,3 +65,10 @@ class SliderImage(models.Model):
 
     def __str__(self):
         return self.caption or f"Slider {self.id}"
+
+class EventType(models.Model):
+    event_name = models.CharField(max_length=150, default="Marriage")
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.event_name

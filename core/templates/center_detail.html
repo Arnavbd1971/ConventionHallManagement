@@ -18,232 +18,598 @@
     </div>
 </div>
 
-<section class="ftco-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="row">
-                    <!-- slider start-->
-                    <div class="col-md-12 ftco-animate">
-                        <div class="single-slider owl-carousel">
-                            {% for img in center_images %}
-                            <div class="item">
-                                <div class="room-img" style="background-image: url('{{ img.image.url }}');"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <!-- slider start-->
+                <div class="col-md-12 ftco-animate mt-5">
+                    <div class="single-slider owl-carousel">
+                        {% for img in center_images %}
+                        <div class="item">
+                            <div class="room-img" style="background-image: url('{{ img.image.url }}');"></div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- slider end-->
+
+                <!-- name and description start-->
+                <div class="col-md-12 room-single mt-4  ftco-animate pb-5">
+                    <h2 class="mb-2">{{center.name}}</h2>
+                    <p style="color:black"><i class="fa-solid fa-location-dot"></i> {{center.address}}</p>
+                    <p style="color:black"><i class="fa-solid fa-phone"></i> {{center.contact_phone}}
+                        <button id="book_now_one"
+                                class="btn btn-danger px-3 py-2 rounded-pill ml-3" data-bs-toggle="modal"
+                                data-bs-target="#bookingModal">
+                            <span class="btn-text">Book Now</span>
+                        </button>
+                    </p>
+                    <h2 class="mt-4">Description</h2>
+                    <h5 class="mt-2">{{center.description}}</h5>
+                </div>
+                <!-- name and description end-->
+
+                <!-- Halls Start-->
+                {% if halls %}
+                <div class="col-md-12 ftco-animate">
+                    <div class="container">
+                        <div class="row justify-content-center mb-2 pb-3">
+                            <div class="col-md-7 heading-section text-center ftco-animate">
+                                <span class="subheading">{{ center.name }}</span>
+                                <h2>Halls</h2>
+                            </div>
+                        </div>
+
+                        <!-- Tabs (Hall Names) -->
+                        <ul class="nav navs-tabs justify-content-center mb-4" id="hallTabs" role="tablist">
+                            {% for hall in halls %}
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {% if forloop.first %}active{% endif %}"
+                                        id="hall-{{ hall.id }}-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#hall-{{ hall.id }}"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="hall-{{ hall.id }}"
+                                        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                                    {{ hall.name }}
+                                </button>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                        <!-- Tab Content (Hall Details) -->
+                        <div class="tab-content" id="hallTabsContent">
+                            {% for hall in halls %}
+                            <div class="tab-pane fade {% if forloop.first %}show active{% endif %}"
+                                 id="hall-{{ hall.id }}" role="tabpanel" aria-labelledby="hall-{{ hall.id }}-tab">
+                                <div class="col-md-12 ftco-animate pb-5">
+                                    <div class="blog-entry align-self-stretch center-card shadow-sm p-4">
+                                        <div class="text mt-3 text-center">
+                                            <div class="meta mb-2">
+                                                <div>Last Updated {{ hall.updated_at|date:"M. d, Y" }}
+                                                    at {{ hall.updated_at|time:"h:i A" }}
+                                                </div>
+                                            </div>
+                                            <h3 class="heading">{{hall.name}}</h3>
+                                            <p style="color: black">{{hall.description}}</p>
+
+                                            <!--Font Awesome CDN-->
+                                            <link rel="stylesheet"
+                                                  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+                                            <div class="hall-info d-flex flex-wrap justify-content-center mt-5 mb-5 text-center">
+                                                <div class="row d-flex justify-content-center">
+                                                    <div class="col-md-4 info-item">
+                                                        <i class="fa-solid fa-couch"></i>
+                                                        <h5>
+                                                            <span>Capacity</span><br>
+                                                            {{ hall.capacity }}
+                                                        </h5>
+                                                    </div>
+
+                                                    <div class="col-md-4 info-item">
+                                                        <i class="fa-solid fa-utensils"></i>
+                                                        <h5>
+                                                            <span>Batch</span><br>
+                                                            {{ hall.batch }}
+                                                        </h5>
+                                                    </div>
+
+                                                    <div class="col-md-4 info-item">
+                                                        <i class="fa-solid fa-house-chimney"></i>
+                                                        <h5>
+                                                            <span>Area Size</span><br>
+                                                            {{ hall.size }} Sq Ft
+                                                        </h5>
+                                                    </div>
+
+                                                    <div class="col-md-4 info-item">
+                                                        <i class="fa-solid fa-money-bill-wave"></i>
+                                                        <h5>
+                                                            <span>Price Per Hour</span><br>
+                                                            {{ hall.price_per_hour }} {{ hall.price_currency }}
+                                                        </h5>
+                                                    </div>
+
+                                                    <div class="col-md-4 info-item">
+                                                        <i class="fa-solid fa-money-bill-wave"></i>
+                                                        <h5>
+                                                            <span>Price Per Day</span><br>
+                                                            {{ hall.price_per_day }} {{ hall.price_currency }}
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="text-center mt-4">
+                                                <button id="book_now_two"
+                                                        class="btn btn-danger px-4 py-2 rounded-pill"
+                                                        data-bs-toggle="modal" data-bs-target="#bookingModal">
+                                                    <span class="btn-text">Book Now</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             {% endfor %}
                         </div>
                     </div>
-                    <!-- slider end-->
+                </div>
+                {% endif %}
+                <!-- Halls end-->
 
-                    <!--                    name and description start-->
-                    <div class="col-md-12 room-single mt-4  ftco-animate">
-                        <h2 class="mb-2">{{center.name}}<span
-                                class="badge bg-dark text-white position-absolute top-0 start-0 m-2"
-                                style="font-size:10px">FOR RENT</span></h2>
-                        <p style="color:black">📍 {{center.address}}</p>
-                        <h2 class="mt-4">Description</h2>
-                        <h5 class="mt-2">{{center.description}}</h5>
-                    </div>
-                    <!--                    name and description end-->
-
-                    <!-- Halls Start-->
-                    <div class="col-md-12 ftco-animate">
-                        <section class="ftco-section">
-                            <div class="container">
-                                <div class="row justify-content-center mb-5 pb-3">
-                                    <div class="col-md-7 heading-section text-center ftco-animate">
-                                        <span class="subheading">{{center.name}}</span>
-                                        <h2>Halls</h2>
-                                    </div>
-                                </div>
-                                <div class="row d-flex">
-                                    {% for hall in halls %}
-                                    <div class="{% if halls|length == 1 %}
-                                                    col-md-12
-                                                {% elif halls|length == 2 %}
-                                                    col-md-6
-                                                {% else %}
-                                                    col-md-4
-                                                {% endif %} d-flex ftco-animate">
-                                        <div class="blog-entry align-self-stretch center-card shadow-sm p-4">
-                                            <div class="text mt-3 text-center">
-                                                <div class="meta mb-2">
-                                                    <div><a href="#">Last Updated {{ hall.updated_at|date:"M. d, Y" }}
-                                                        at {{ hall.updated_at|time:"h:i A" }}</a></div>
-                                                </div>
-                                                <h3 class="heading"><a href="#">{{hall.name}}</a></h3>
-                                                <p style="color: black">{{hall.description}}</p>
-
-                                                <!-- Font Awesome CDN -->
-                                                <link rel="stylesheet"
-                                                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-                                                <div class="hall-info d-flex flex-wrap justify-content-center gap-4 mt-5 mb-5 text-center">
-                                                    <div class="row">
-                                                        <div class="col-md-4 info-item">
-                                                            <i class="fa-solid fa-couch"></i>
-                                                            <h5>
-                                                                <span>Capacity</span><br>
-                                                                {{ hall.capacity }}
-                                                            </h5>
-                                                        </div>
-
-                                                        <div class="col-md-4 info-item">
-                                                            <i class="fa-solid fa-utensils"></i>
-                                                            <h5>
-                                                                <span>Batch</span><br>
-                                                                {{ hall.batch }}
-                                                            </h5>
-                                                        </div>
-
-                                                        <div class="col-md-4 info-item">
-                                                            <i class="fa-solid fa-house-chimney"></i>
-                                                            <h5>
-                                                                <span>Area Size</span><br>
-                                                                {{ hall.size }} Sq Ft
-                                                            </h5>
-                                                        </div>
-
-                                                        <div class="col-md-4 info-item">
-                                                            <i class="fa-solid fa-money-bill-wave"></i>
-                                                            <h5>
-                                                                <span>Price Per Hour</span><br>
-                                                                {{ hall.price_per_hour }} {{ hall.price_currency }}
-                                                            </h5>
-                                                        </div>
-
-                                                        <div class="col-md-4 info-item">
-                                                            <i class="fa-solid fa-money-bill-wave"></i>
-                                                            <h5>
-                                                                <span>Price Per Day</span><br>
-                                                                {{ hall.price_per_day }} {{ hall.price_currency }}
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="text-center mt-4">
-                                                    <button id="load-more-btn"
-                                                            class="btn btn-danger px-4 py-2 rounded-pill">
-                                                        <span class="btn-text">Book Now</span>
-                                                        <span class="spinner-border spinner-border-sm d-none"
-                                                              role="status" aria-hidden="true"></span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                    <!-- Halls end-->
-
-                    <!--                    Amenitis start-->
-                    <section class="ftco-section">
-                        <div class="container">
-                            <div class="row justify-content-center mb-5 pb-3">
-                                <div class="col-md-7 heading-section text-center ftco-animate">
-                                    <span class="subheading">{{ center.name }}</span>
-                                    <h2 class="mb-4">Features</h2>
-                                </div>
-                            </div>
-
-                            <div class="row d-flex justify-content-center">
-                                {% for amenity in center.amenities.all %}
-                                <div class="col-md px-md-1 d-flex align-self-stretch ftco-animate">
-                                    <div class="media block-6 services py-4 d-block text-center">
-                                        <div class="d-flex justify-content-center">
-                                            <div class="icon d-flex align-items-center justify-content-center">
-                                                {% if amenity.icon %}
-                                                <img src="{{ amenity.icon.url }}" alt="{{ amenity.name }}" class="img-fluid amenity-icon" style="width:50%">
-                                                {% else %}
-                                                <span class="flaticon-star"></span> <!-- fallback icon -->
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        <div class="media-body">
-                                            <h3 class="heading mb-3">{{ amenity.name }}</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% empty %}
-                                <div class="col-md-12 text-center">
-                                    <p>No amenities listed for this center yet.</p>
-                                </div>
-                                {% endfor %}
+                <!-- Catering Menu Start-->
+                <div class="col-md-12 ftco-animate">
+                    <div class="container">
+                        <div class="row justify-content-center mb-2 pb-3">
+                            <div class="col-md-7 heading-section text-center ftco-animate">
+                                <span class="subheading">{{ center.name }}</span>
+                                <h2>Catering Menu</h2>
                             </div>
                         </div>
-                    </section>
-                    <!--   Amenitis end-->
 
+                        <!-- Tabs (Menu Names) -->
+                        <ul class="nav navs-tabs justify-content-center mb-4" id="cateringTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="menu1-tab" data-bs-toggle="tab"
+                                        data-bs-target="#menu1"
+                                        type="button" role="tab" aria-controls="menu1" aria-selected="true">
+                                    Menu 1
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="menu2-tab" data-bs-toggle="tab" data-bs-target="#menu2"
+                                        type="button" role="tab" aria-controls="menu2" aria-selected="false">
+                                    Menu 2
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="menu3-tab" data-bs-toggle="tab" data-bs-target="#menu3"
+                                        type="button" role="tab" aria-controls="menu3" aria-selected="false">
+                                    Menu 3
+                                </button>
+                            </li>
+                        </ul>
 
-                    <!--                    Center video start-->
-                    <!--                    <div class="col-md-12 room-single ftco-animate mb-5 mt-4">-->
-                    <!--                        <h3 class="mb-4">Take A Tour</h3>-->
-                    <!--                        <div class="block-16">-->
-                    <!--                            <figure>-->
-                    <!--                                <img src="{%static 'assets/website/images/room-4.jpg' %}" alt="Image placeholder"-->
-                    <!--                                     class="img-fluid">-->
-                    <!--                                <a href="https://vimeo.com/45830194" class="play-button popup-vimeo"><span-->
-                    <!--                                        class="icon-play"></span></a>-->
-                    <!--                            </figure>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-                    <!--                    Center video end-->
+                        <!-- Tab Content (Catering Details) -->
+                        <div class="tab-content" id="cateringTabsContent">
 
+                            <!-- Menu 1 -->
+                            <div class="tab-pane fade show active " id="menu1" role="tabpanel"
+                                 aria-labelledby="menu1-tab">
+                                <div class="col-md-12 ftco-animate pb-5">
+                                    <div class="blog-entry center-card shadow-sm p-4 text-center">
+                                        <div class="text mt-3">
+                                            <h4 class="text-danger mb-3">Traditional Bangladeshi Feast</h4>
+                                            <ul class="list-unstyled mx-auto" style="max-width:600px; color:black;">
+                                                <li>🍚 Plain Polao / Basmati Rice</li>
+                                                <li>🍗 Chicken Roast (Deshi Style)</li>
+                                                <li>🥩 Beef Rezala / Kacchi Biriyani (Option)</li>
+                                                <li>🍛 Dal Fry / Chana Dal</li>
+                                                <li>🥗 Mixed Salad with Lemon</li>
+                                                <li>🍮 Firni / Jorda</li>
+                                                <li>🥤 Soft Drinks & Mineral Water</li>
+                                            </ul>
+                                            <h5 class="mt-3 text-success">৳ 450 per person</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <!-- Menu 2 -->
+                            <div class="tab-pane fade" id="menu2" role="tabpanel" aria-labelledby="menu2-tab">
+                                <div class="col-md-12 ftco-animate pb-5">
+                                    <div class="blog-entry center-card shadow-sm p-4 text-center">
+                                        <div class="text mt-3">
+                                            <h4 class="text-danger mb-3">Premium Wedding Menu</h4>
+                                            <ul class="list-unstyled mx-auto" style="max-width:600px; color:black;">
+                                                <li>🍗 Kacchi Biriyani (Beef)</li>
+                                                <li>🍖 Chicken Roast</li>
+                                                <li>🥚 Egg Curry / Kofta</li>
+                                                <li>🥗 Mixed Vegetable Curry</li>
+                                                <li>🍞 Paratha / Naan</li>
+                                                <li>🍮 Firni & Sweet Yogurt</li>
+                                                <li>🍹 Borhani</li>
+                                            </ul>
+                                            <h5 class="mt-3 text-success">৳ 650 per person</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Menu 3 -->
+                            <div class="tab-pane fade" id="menu3" role="tabpanel" aria-labelledby="menu3-tab">
+                                <div class="col-md-12 ftco-animate pb-5">
+                                    <div class="blog-entry center-card shadow-sm p-4 text-center">
+                                        <div class="text mt-3">
+                                            <h4 class="text-danger mb-3">Corporate Lunch Menu</h4>
+                                            <ul class="list-unstyled mx-auto" style="max-width:600px; color:black;">
+                                                <li>🍚 Fried Rice / Vegetable Polao</li>
+                                                <li>🍤 Prawn Curry / Chicken Jhal Fry</li>
+                                                <li>🥩 Beef Bhuna</li>
+                                                <li>🥗 Green Salad & Raita</li>
+                                                <li>🍮 Ice Cream / Custard</li>
+                                                <li>☕ Tea / Coffee</li>
+                                            </ul>
+                                            <h5 class="mt-3 text-success">৳ 550 per person</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- Catering end-->
+
+                <!-- Decoration Packages Start -->
+                <div class="col-md-12 ftco-animate">
+                    <div class="container">
+                        <div class="row justify-content-center mb-2 pb-3">
+                            <div class="col-md-7 heading-section text-center ftco-animate">
+                                <span class="subheading">{{ center.name }}</span>
+                                <h2>Decoration Packages</h2>
+                            </div>
+                        </div>
+
+                        <!-- Tabs (Package Names) -->
+                        <ul class="nav navs-tabs justify-content-center mb-4" id="decorationTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="basic-tab" data-bs-toggle="tab"
+                                        data-bs-target="#basic"
+                                        type="button" role="tab" aria-controls="basic" aria-selected="true">
+                                    Basic Package
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="premium-tab" data-bs-toggle="tab" data-bs-target="#premium"
+                                        type="button" role="tab" aria-controls="premium" aria-selected="false">
+                                    Premium Package
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="royal-tab" data-bs-toggle="tab" data-bs-target="#royal"
+                                        type="button" role="tab" aria-controls="royal" aria-selected="false">
+                                    Royal Package
+                                </button>
+                            </li>
+                        </ul>
+
+                        <!-- Tab Content (Decoration Details) -->
+                        <div class="tab-content" id="decorationTabsContent">
+
+                            <!-- Basic Package -->
+                            <div class="tab-pane fade show active" id="basic" role="tabpanel"
+                                 aria-labelledby="basic-tab">
+                                <div class="col-md-12 ftco-animate pb-5">
+                                    <div class="blog-entry center-card shadow-sm p-4 text-center">
+                                        <div class="text mt-3">
+                                            <h4 class="text-danger mb-3">Basic Decoration Package</h4>
+                                            <ul class="list-unstyled mx-auto" style="max-width:600px; color:black;">
+                                                <li>🎈 Simple Stage with Backdrop Cloth</li>
+                                                <li>💐 Artificial Flower Arrangement</li>
+                                                <li>🪑 Chair Covers & Table Runners</li>
+                                                <li>💡 Basic Lighting Setup</li>
+                                                <li>🎵 Background Music (Soft)</li>
+                                            </ul>
+                                            <h5 class="mt-3 text-success">৳ 8,000 – ৳ 10,000</h5>
+                                        </div>
+
+                                        <!-- Decoration Images-->
+                                        <section class="instagram">
+                                            <div class="container-fluid">
+                                                <div class="row no-gutters justify-content-center pt-3 pb-3">
+                                                    <div class="col-md-7 text-center heading-section ftco-animate">
+                                                        <span class="subheading">Photos</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row no-gutters">
+                                                    <div class="col-sm-12 col-md ftco-animate">
+                                                        <a href="{%static 'assets/website/images/insta-1.jpg' %}"
+                                                           class="insta-img image-popup"
+                                                           style="background-image: url({%static 'assets/website/images/insta-1.jpg' %});">
+                                                            <div class="icon d-flex justify-content-center">
+                                                                <span class="icon-image align-self-center"></span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md ftco-animate">
+                                                        <a href="{%static 'assets/website/images/insta-2.jpg' %}"
+                                                           class="insta-img image-popup"
+                                                           style="background-image: url({%static 'assets/website/images/insta-2.jpg' %});">
+                                                            <div class="icon d-flex justify-content-center">
+                                                                <span class="icon-image align-self-center"></span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md ftco-animate">
+                                                        <a href="{%static 'assets/website/images/insta-3.jpg' %}"
+                                                           class="insta-img image-popup"
+                                                           style="background-image: url({%static 'assets/website/images/insta-3.jpg' %});">
+                                                            <div class="icon d-flex justify-content-center">
+                                                                <span class="icon-image align-self-center"></span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md ftco-animate">
+                                                        <a href="{%static 'assets/website/images/insta-4.jpg' %}"
+                                                           class="insta-img image-popup"
+                                                           style="background-image: url({%static 'assets/website/images/insta-4.jpg' %});">
+                                                            <div class="icon d-flex justify-content-center">
+                                                                <span class="icon-image align-self-center"></span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Premium Package -->
+                            <div class="tab-pane fade" id="premium" role="tabpanel" aria-labelledby="premium-tab">
+                                <div class="col-md-12 ftco-animate pb-5">
+                                    <div class="blog-entry center-card shadow-sm p-4 text-center">
+                                        <div class="text mt-3">
+                                            <h4 class="text-danger mb-3">Premium Decoration Package</h4>
+                                            <ul class="list-unstyled mx-auto" style="max-width:600px; color:black;">
+                                                <li>🌸 Premium Stage with Floral Backdrop</li>
+                                                <li>💡 LED Fairy Lights & Spot Lighting</li>
+                                                <li>🎀 Entrance Arch with Flowers</li>
+                                                <li>🪞 VIP Table Setup with Centerpieces</li>
+                                                <li>🎶 Background Music + Sound System</li>
+                                            </ul>
+                                            <h5 class="mt-3 text-success">৳ 15,000 – ৳ 20,000</h5>
+                                        </div>
+
+                                        <!-- Decoration Images-->
+                                        <section class="instagram">
+                                            <div class="container-fluid">
+                                                <div class="row no-gutters justify-content-center pt-3 pb-3">
+                                                    <div class="col-md-7 text-center heading-section ftco-animate">
+                                                        <span class="subheading">Photos</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row no-gutters">
+                                                    <div class="col-sm-12 col-md ftco-animate">
+                                                        <a href="{%static 'assets/website/images/insta-1.jpg' %}"
+                                                           class="insta-img image-popup"
+                                                           style="background-image: url({%static 'assets/website/images/insta-1.jpg' %});">
+                                                            <div class="icon d-flex justify-content-center">
+                                                                <span class="icon-image align-self-center"></span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md ftco-animate">
+                                                        <a href="{%static 'assets/website/images/insta-2.jpg' %}"
+                                                           class="insta-img image-popup"
+                                                           style="background-image: url({%static 'assets/website/images/insta-2.jpg' %});">
+                                                            <div class="icon d-flex justify-content-center">
+                                                                <span class="icon-image align-self-center"></span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md ftco-animate">
+                                                        <a href="{%static 'assets/website/images/insta-3.jpg' %}"
+                                                           class="insta-img image-popup"
+                                                           style="background-image: url({%static 'assets/website/images/insta-3.jpg' %});">
+                                                            <div class="icon d-flex justify-content-center">
+                                                                <span class="icon-image align-self-center"></span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md ftco-animate">
+                                                        <a href="{%static 'assets/website/images/insta-4.jpg' %}"
+                                                           class="insta-img image-popup"
+                                                           style="background-image: url({%static 'assets/website/images/insta-4.jpg' %});">
+                                                            <div class="icon d-flex justify-content-center">
+                                                                <span class="icon-image align-self-center"></span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Royal Package -->
+                            <div class="tab-pane fade" id="royal" role="tabpanel" aria-labelledby="royal-tab">
+                                <div class="col-md-12 ftco-animate pb-5">
+                                    <div class="blog-entry center-card shadow-sm p-4 text-center">
+                                        <div class="text mt-3">
+                                            <h4 class="text-danger mb-3">Royal Decoration Package</h4>
+                                            <ul class="list-unstyled mx-auto" style="max-width:600px; color:black;">
+                                                <li>🌹 Royal Stage with Real Flowers</li>
+                                                <li>💎 Crystal Chandeliers & LED Ceiling Setup</li>
+                                                <li>🏵️ Full Venue Draping & Floral Pathway</li>
+                                                <li>🎇 Dynamic Light Show with Fog Effect</li>
+                                                <li>🎵 Live Background Music (Optional)</li>
+                                            </ul>
+                                            <h5 class="mt-3 text-success">৳ 30,000 – ৳ 40,000</h5>
+                                        </div>
+
+                                        <!-- Decoration Images-->
+                                        <section class="instagram">
+                                            <div class="container-fluid">
+                                                <div class="row no-gutters justify-content-center pt-3 pb-3">
+                                                    <div class="col-md-7 text-center heading-section ftco-animate">
+                                                        <span class="subheading">Photos</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row no-gutters">
+                                                    <div class="col-sm-12 col-md ftco-animate">
+                                                        <a href="{%static 'assets/website/images/insta-1.jpg' %}"
+                                                           class="insta-img image-popup"
+                                                           style="background-image: url({%static 'assets/website/images/insta-1.jpg' %});">
+                                                            <div class="icon d-flex justify-content-center">
+                                                                <span class="icon-image align-self-center"></span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md ftco-animate">
+                                                        <a href="{%static 'assets/website/images/insta-2.jpg' %}"
+                                                           class="insta-img image-popup"
+                                                           style="background-image: url({%static 'assets/website/images/insta-2.jpg' %});">
+                                                            <div class="icon d-flex justify-content-center">
+                                                                <span class="icon-image align-self-center"></span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md ftco-animate">
+                                                        <a href="{%static 'assets/website/images/insta-3.jpg' %}"
+                                                           class="insta-img image-popup"
+                                                           style="background-image: url({%static 'assets/website/images/insta-3.jpg' %});">
+                                                            <div class="icon d-flex justify-content-center">
+                                                                <span class="icon-image align-self-center"></span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md ftco-animate">
+                                                        <a href="{%static 'assets/website/images/insta-4.jpg' %}"
+                                                           class="insta-img image-popup"
+                                                           style="background-image: url({%static 'assets/website/images/insta-4.jpg' %});">
+                                                            <div class="icon d-flex justify-content-center">
+                                                                <span class="icon-image align-self-center"></span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Decoration Packages End -->
+
+
+                <!--Amenitis start-->
+                {% if center.amenities.all %}
+                <div class="container pb-5">
+                    <div class="row justify-content-center mb-5 pb-3">
+                        <div class="col-md-7 heading-section text-center ftco-animate">
+                            <span class="subheading">{{ center.name }}</span>
+                            <h2 class="mb-4">Features</h2>
+                        </div>
+                    </div>
+
+                    <div class="row d-flex justify-content-center">
+                        {% for amenity in center.amenities.all %}
+                        <div class="col-md-3 px-md-1 d-flex align-self-stretch ftco-animate" style="margin-bottom:70px">
+                            <div class="media block-6 services py-4 d-block text-center border rounded">
+                                <div class="d-flex justify-content-center">
+                                    <div class="icon d-flex align-items-center justify-content-center">
+                                        {% if amenity.icon %}
+                                        <img src="{{ amenity.icon.url }}" alt="{{ amenity.name }}"
+                                             class="img-fluid amenity-icon" style="width:50%">
+                                        {% else %}
+                                        <span class="flaticon-star"></span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h3 class="heading mb-3">{{ amenity.name }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% endif %}
+                <!--Amenitis end-->
+
+                <!--                    Center video start-->
+                <!--                    <div class="col-md-12 room-single ftco-animate mb-5 mt-4">-->
+                <!--                        <h3 class="mb-4">Take A Tour</h3>-->
+                <!--                        <div class="block-16">-->
+                <!--                            <figure>-->
+                <!--                                <img src="{%static 'assets/website/images/room-4.jpg' %}" alt="Image placeholder"-->
+                <!--                                     class="img-fluid">-->
+                <!--                                <a href="https://vimeo.com/45830194" class="play-button popup-vimeo"><span-->
+                <!--                                        class="icon-play"></span></a>-->
+                <!--                            </figure>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                    Center video end-->
+
+
             </div>
         </div>
     </div>
-</section>
+</div>
 
 <style>
     .hall-info {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.info-item {
-    width: 120px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #2f89fc;
-}
-
-.info-item i {
-    font-size: 40px;
-    margin-bottom: 8px;
-}
-
-.info-item h6 {
-    font-size: 15px;
-    color: #000;
-    margin-bottom: 2px;
-}
-
-.info-item span {
-    font-size: 14px;
-    color: #000;
-}
-
-@media (max-width: 768px) {
-    .info-item {
-        width: 100px;
+        max-width: 900px;
+        margin: 0 auto;
     }
-}
 
-    /* === CARD BASE === */
+    .info-item {
+        width: 120px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #2f89fc;
+    }
+
+    .info-item i {
+        font-size: 40px;
+        margin-bottom: 8px;
+    }
+
+    .info-item h6 {
+        font-size: 15px;
+        color: #000;
+        margin-bottom: 2px;
+    }
+
+    .info-item span {
+        font-size: 14px;
+        color: #000;
+    }
+
+    @media (max-width: 768px) {
+        .info-item {
+            width: 100px;
+        }
+    }
     .center-card {
       background: #fff;
       border-radius: 10px;
       overflow: hidden;
       position: relative;
       transition: all 0.3s ease;
-      display: flex;
+<!--      display: flex;-->
       flex-direction: row;
       align-items: stretch;
       height: 100%;
@@ -259,5 +625,479 @@
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15) !important;
     }
 
+    .navs-tabs .nav-link {
+      border: none;
+      background: #f8f9fa;
+      color: #333;
+      font-weight: 500;
+      border-radius: 25px;
+      margin: 0 5px;
+      transition: 0.3s ease;
+    }
+
+    .navs-tabs .nav-link.active {
+      background-color: #dc3545;
+      color: #fff !important;
+    }
+
+    .navs-tabs .nav-link:hover {
+      background-color: #dc3545;
+      color: #fff !important;
+    }
+
+    .amenity-row {
+        border-bottom: 1px solid #eee;
+        margin-bottom: 25px;
+        padding-bottom: 25px;
+    }
+
+
 </style>
+
+
+<!-- ===========================
+     BOOK NOW MULTI-STEP MODAL
+=========================== -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Booking Modal -->
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+
+            <!-- Modal Header -->
+            <div class="modal-header bg-danger text-white d-flex justify-content-between align-items-center">
+                <h5 class="modal-title" id="bookingModalLabel">
+                    <i class="fa-solid fa-calendar-check me-2"></i>Book Your Event
+                </h5>
+                <button type="button" class="btn text-white" data-bs-dismiss="modal" aria-label="Close"
+                        style="border:none;background:none;">
+                    <i class="fa-solid fa-xmark fa-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+
+                <!-- Step Progress Indicator -->
+                <div class="d-flex justify-content-between mb-4">
+                    <div class="step text-center flex-fill">
+                        <div class="circle bg-danger text-white mx-auto mb-1">1</div>
+                        <small>Basic Info</small>
+                    </div>
+                    <div class="step text-center flex-fill">
+                        <div class="circle bg-secondary text-white mx-auto mb-1">2</div>
+                        <small>Services</small>
+                    </div>
+                    <div class="step text-center flex-fill">
+                        <div class="circle bg-secondary text-white mx-auto mb-1">3</div>
+                        <small>Summary</small>
+                    </div>
+                    <div class="step text-center flex-fill">
+                        <div class="circle bg-secondary text-white mx-auto mb-1">4</div>
+                        <small>Payment</small>
+                    </div>
+                </div>
+
+                <!-- Booking Steps -->
+                <div class="booking-steps">
+
+                    <!-- Step 1 -->
+                    <div class="booking-step" id="step1">
+                        <h5 class="text-center mb-3 text-danger">Select Center & Event Details</h5>
+                        <form id="step1Form">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Select Center</label>
+                                    <select class="form-select">
+                                        <option selected disabled>Select Center</option>
+                                        <option>Dream Convention Center</option>
+                                        <option>Royal Banquet Hall</option>
+                                        <option>Sunrise Community Hall</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Select Hall</label>
+                                    <select class="form-select">
+                                        <option selected disabled>Select Hall</option>
+                                        <option>Hall A - 300 Guests</option>
+                                        <option>Hall B - 150 Guests</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">Select Date</label>
+                                    <input type="date" class="form-control"/>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Event Type</label>
+                                    <select class="form-select">
+                                        <option selected disabled>Select Event Type</option>
+                                        <option>Wedding</option>
+                                        <option>Corporate Meeting</option>
+                                        <option>Birthday Party</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Shift</label>
+                                    <select class="form-select">
+                                        <option>Day</option>
+                                        <option>Night</option>
+                                        <option>Full Day</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Customer Name</label>
+                                    <input type="text" class="form-control" placeholder="John Doe"/>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phone</label>
+                                    <input type="text" class="form-control" placeholder="+8801XXXXXXXXX"/>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Address</label>
+                                <textarea class="form-control" placeholder="Customer address"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">Number of Guests</label>
+                                    <input type="number" class="form-control" value="100"/>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button type="button" class="btn btn-danger nextBtn">Next</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="booking-step d-none" id="step2">
+                        <h5 class="text-center mb-3 text-danger">Select Services</h5>
+                        <form id="step2Form">
+
+                            <!-- Catering Service -->
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="catering">
+                                <label class="form-check-label fw-semibold" for="catering">Catering Service</label>
+
+                                <!-- Catering Menu Dropdown -->
+                                <select class="form-select mt-2" id="cateringPackage" style="max-width:220px;" disabled>
+                                    <option selected disabled>Select Menu</option>
+                                    <option>Menu 1 - Traditional Bangla (৳450 per person)</option>
+                                    <option>Menu 2 - Premium Wedding (৳650 per person)</option>
+                                    <option>Menu 3 - Corporate Lunch (৳550 per person)</option>
+                                </select>
+
+                                <!-- Menu Details (Dynamic Info) -->
+                                <div id="menuDetails" class="mt-3 border rounded p-3 bg-light d-none">
+                                    <h6 class="text-danger" id="menuTitle">Menu 1 - Traditional Bangla</h6>
+                                    <ul class="small mb-2" id="menuItems">
+                                        <li>Plain Polao / Basmati Rice</li>
+                                        <li>Chicken Roast</li>
+                                        <li>Beef Rezala / Kacchi Biriyani</li>
+                                        <li>Firni / Jorda</li>
+                                    </ul>
+                                    <p class="text-success fw-semibold" id="menuPrice">৳450 per person</p>
+                                </div>
+                            </div>
+
+                            <!-- Decoration Service -->
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="decoration">
+                                <label class="form-check-label fw-semibold" for="decoration">Decoration Service</label>
+
+                                <!-- Decoration Package Dropdown -->
+                                <select class="form-select mt-2" id="decorationPackage" style="max-width:220px;"
+                                        disabled>
+                                    <option selected disabled>Select Package</option>
+                                    <option>Basic - ৳8,000</option>
+                                    <option>Premium - ৳15,000</option>
+                                    <option>Royal - ৳30,000</option>
+                                </select>
+
+                                <!-- Decoration Details (Dynamic Info) -->
+                                <div id="decorationDetails" class="mt-3 border rounded p-3 bg-light d-none">
+                                    <h6 class="text-danger" id="decorationTitle">Basic Package</h6>
+                                    <ul class="small mb-2" id="decorationItems">
+                                        <!-- Items will be inserted here -->
+                                    </ul>
+                                    <p class="text-success fw-semibold" id="decorationPrice">৳8,000</p>
+                                </div>
+                            </div>
+
+
+                            <div class="text-end">
+                                <button type="button" class="btn btn-secondary prevBtn">Back</button>
+                                <button type="button" class="btn btn-danger nextBtn">Next</button>
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <!-- Step 3 -->
+                    <div class="booking-step d-none" id="step3">
+                        <h5 class="text-center mb-3 text-danger">Booking Summary</h5>
+                        <div class="border p-3 rounded bg-light">
+                            <p><strong>Center:</strong> Dream Convention Center</p>
+                            <p><strong>Hall:</strong> Hall A</p>
+                            <p><strong>Date:</strong> 15 November 2025</p>
+                            <p><strong>Guests:</strong> 120</p>
+                            <p><strong>Shift:</strong> Full Day</p>
+                            <hr>
+                            <h6>Cost Breakdown</h6>
+                            <ul>
+                                <li>Hall Charge: ৳20,000</li>
+                                <li>Catering: ৳54,000</li>
+                                <li>Decoration: ৳15,000</li>
+                            </ul>
+                            <hr>
+                            <h5 class="text-danger fw-bold">Total: ৳89,000</h5>
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="button" class="btn btn-secondary prevBtn">Back</button>
+                            <button type="button" class="btn btn-danger nextBtn">Confirm & Pay</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="booking-step d-none" id="step4">
+                        <h5 class="text-center mb-3 text-danger">Payment</h5>
+                        <div class="border p-3 rounded bg-light">
+                            <p><strong>Payment Method</strong></p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment" id="payment1" checked>
+                                <label class="form-check-label" for="payment1">Credit / Debit Card</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment" id="payment2">
+                                <label class="form-check-label" for="payment2">bKash / Nagad</label>
+                            </div>
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="button" class="btn btn-secondary prevBtn">Back</button>
+                            <button type="button" class="btn btn-success" id="payNowBtn">Pay Now</button>
+
+                        </div>
+                    </div>
+
+                </div> <!-- End Booking Steps -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .step-badge {
+      font-size: 0.9rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+
+    .step .circle {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .step small {
+      font-size: 0.85rem;
+      color: #555;
+    }
+    .booking-step {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const steps = document.querySelectorAll('.booking-step');
+      const nextBtns = document.querySelectorAll('.nextBtn');
+      const prevBtns = document.querySelectorAll('.prevBtn');
+      const circles = document.querySelectorAll('.step .circle'); // select all circles
+
+      let currentStep = 0;
+
+      function showStep(index) {
+        // show/hide form steps
+        steps.forEach((step, i) => step.classList.toggle('d-none', i !== index));
+
+        // update progress bar colors
+        circles.forEach((circle, i) => {
+          if (i === index) {
+            circle.classList.remove('bg-secondary');
+            circle.classList.add('bg-danger');
+          } else if (i < index) {
+            circle.classList.remove('bg-secondary');
+            circle.classList.add('bg-success');
+          } else {
+            circle.classList.remove('bg-danger', 'bg-success');
+            circle.classList.add('bg-secondary');
+          }
+        });
+      }
+
+      nextBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (currentStep < steps.length - 1) {
+            currentStep++;
+            showStep(currentStep);
+          }
+        });
+      });
+
+      prevBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (currentStep > 0) {
+            currentStep--;
+            showStep(currentStep);
+          }
+        });
+      });
+
+      showStep(currentStep);
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Catering Elements
+      const cateringCheckbox = document.getElementById('catering');
+      const cateringSelect = document.getElementById('cateringPackage');
+      const menuDetails = document.getElementById('menuDetails');
+      const menuTitle = document.getElementById('menuTitle');
+      const menuItems = document.getElementById('menuItems');
+      const menuPrice = document.getElementById('menuPrice');
+
+      const menus = {
+        "Menu 1 - Traditional Bangla (৳450 per person)": {
+          title: "Menu 1 - Traditional Bangla",
+          items: ["Plain Polao / Basmati Rice", "Chicken Roast", "Beef Rezala / Kacchi Biriyani", "Firni / Jorda"],
+          price: "৳450 per person"
+        },
+        "Menu 2 - Premium Wedding (৳650 per person)": {
+          title: "Menu 2 - Premium Wedding",
+          items: ["Kacchi Biriyani (Beef)", "Chicken Roast", "Firni & Sweet Yogurt", "Borhani"],
+          price: "৳650 per person"
+        },
+        "Menu 3 - Corporate Lunch (৳550 per person)": {
+          title: "Menu 3 - Corporate Lunch",
+          items: ["Fried Rice", "Prawn Curry / Chicken Jhal Fry", "Ice Cream / Custard", "Tea / Coffee"],
+          price: "৳550 per person"
+        }
+      };
+
+      // Decoration Elements
+      const decorationCheckbox = document.getElementById('decoration');
+      const decorationSelect = document.getElementById('decorationPackage');
+      const decorationDetails = document.getElementById('decorationDetails');
+      const decorationTitle = document.getElementById('decorationTitle');
+      const decorationItems = document.getElementById('decorationItems');
+      const decorationPrice = document.getElementById('decorationPrice');
+
+      const decorationPackages = {
+        "Basic - ৳8,000": {
+          title: "Basic Package",
+          items: ["Standard Flowers", "Tablecloth & Chair Covers", "Simple Centerpieces"],
+          price: "৳8,000"
+        },
+        "Premium - ৳15,000": {
+          title: "Premium Package",
+          items: ["Premium Flowers", "Decorative Drapes", "Fancy Centerpieces", "Stage Decoration"],
+          price: "৳15,000"
+        },
+        "Royal - ৳30,000": {
+          title: "Royal Package",
+          items: ["Luxury Flowers", "Themed Decor", "Lighting & Stage Setup", "Grand Centerpieces"],
+          price: "৳30,000"
+        }
+      };
+
+      // Catering toggle
+      cateringCheckbox.addEventListener('change', () => {
+        cateringSelect.disabled = !cateringCheckbox.checked;
+        if (!cateringCheckbox.checked) {
+          menuDetails.classList.add('d-none');
+          cateringSelect.selectedIndex = 0;
+        }
+      });
+
+      // Catering selection
+      cateringSelect.addEventListener('change', () => {
+        const selected = cateringSelect.value;
+        if (menus[selected]) {
+          menuTitle.textContent = menus[selected].title;
+          menuItems.innerHTML = menus[selected].items.map(i => `<li>${i}</li>`).join('');
+          menuPrice.textContent = menus[selected].price;
+          menuDetails.classList.remove('d-none');
+        }
+      });
+
+      // Decoration toggle
+      decorationSelect.disabled = true;
+      decorationCheckbox.addEventListener('change', () => {
+        decorationSelect.disabled = !decorationCheckbox.checked;
+        if (!decorationCheckbox.checked) {
+          decorationSelect.selectedIndex = 0;
+          decorationDetails.classList.add('d-none');
+        }
+      });
+
+      // Decoration selection
+      decorationSelect.addEventListener('change', () => {
+        const selected = decorationSelect.value;
+        if (decorationPackages[selected]) {
+          decorationTitle.textContent = decorationPackages[selected].title;
+          decorationItems.innerHTML = decorationPackages[selected].items.map(i => `<li>${i}</li>`).join('');
+          decorationPrice.textContent = decorationPackages[selected].price;
+          decorationDetails.classList.remove('d-none');
+        }
+      });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const payNowBtn = document.getElementById('payNowBtn');
+        const bookingModal = document.getElementById('bookingModal');
+
+        payNowBtn.addEventListener('click', () => {
+            // Show success message
+            alert('Your booking has been submitted successfully!');
+
+            // Close the modal automatically using Bootstrap's modal API
+            const modal = bootstrap.Modal.getInstance(bookingModal);
+            if (modal) {
+                modal.hide();
+            }
+
+            // Optional: reset all forms and steps
+            const steps = document.querySelectorAll('.booking-step');
+            steps.forEach((step, i) => {
+                if (i === 0) step.classList.remove('d-none');
+                else step.classList.add('d-none');
+            });
+            const selects = document.querySelectorAll('#step2Form select');
+            selects.forEach(sel => sel.selectedIndex = 0);
+            const checkboxes = document.querySelectorAll('#step2Form input[type=checkbox]');
+            checkboxes.forEach(chk => chk.checked = false);
+            const menus = document.querySelectorAll('#menuDetails, #decorationDetails');
+            menus.forEach(menu => menu.classList.add('d-none'));
+        });
+    });
+</script>
+
+
 {%endblock%}
+
+
