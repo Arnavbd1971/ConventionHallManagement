@@ -8,6 +8,16 @@ from django.utils import timezone
 User = get_user_model()
 
 # -------------------------
+# Amenities
+# -------------------------
+class Amenity(models.Model):
+    name = models.TextField(unique=True)
+    icon = models.ImageField(upload_to="hall_images/", default="hall_images/default_icon.png",)
+
+    def __str__(self):
+        return self.name
+
+# -------------------------
 # Center Model
 # -------------------------
 class Center(models.Model):
@@ -98,15 +108,7 @@ class HallImage(models.Model):
         return f"Image for {self.center.name}"
 
 
-# -------------------------
-# Amenities
-# -------------------------
-class Amenity(models.Model):
-    name = models.TextField(unique=True)
-    icon = models.ImageField(upload_to="hall_images/", default="hall_images/default_icon.png",)
 
-    def __str__(self):
-        return self.name
 
 
 
